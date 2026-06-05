@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  matchPlayers MatchPlayer[]
+}
+
+model Match {
+  id          String      @id @default(cuid())
+  type        MatchType
+  mode        MatchMode
+  status      MatchStatus @default(IN_PROGRESS)
+  winnerSide  Side?
+  createdAt   DateTime    @default(now())
+  completedAt DateTime?
+
+  players MatchPlayer[]
+  sets    Set[]
+  points  Point[]
+}
+
+model MatchPlayer {
+  id       String @id @default(cuid())
+  matchId  String
+  userId   String
+  side     Side
+  position Int
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+model Set {
+  id           String @id @default(cuid())
+  matchId      String
+  setNumber    Int
+  homeGames    Int    @default(0)
+  awayGames    Int    @default(0)
+  homeTiebreak Int?
+  awayTiebreak Int?
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+}
+
+model Point {
+  id         String   @id @default(cuid())
+  matchId    String
+  setNumber  Int
+  gameNumber Int
+  scorer     Side
+  createdAt  DateTime @default(now())
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+}
+
+enum MatchType {
+  SINGLE
+  DOUBLE
+}
+
+enum MatchMode {
+  LIVE
+  MANUAL
+}
+
+enum MatchStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum Side {
+  HOME
+  AWAY
+}
