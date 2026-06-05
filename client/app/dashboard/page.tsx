@@ -29,7 +29,7 @@ export default function DashboardPage() {
         <header className="flex items-center justify-between px-4 pt-12 pb-6">
           <div>
             <p className="text-sm text-muted">Bonjour,</p>
-            <h1 className="text-xl font-bold text-body">{user?.username} 👋</h1>
+            <h1 className="text-xl font-bold text-body">{user?.username}</h1>
           </div>
         </header>
 

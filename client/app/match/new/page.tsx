@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import { api, User } from '@/lib/api'
 import AuthGuard from '@/components/AuthGuard'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, Check } from 'lucide-react'
+import { ChevronLeft, Check, User, Users, Radio, ClipboardList } from 'lucide-react'
 
 type MatchType = 'SINGLE' | 'DOUBLE'
 type MatchMode = 'LIVE' | 'MANUAL'
@@ -103,7 +103,7 @@ export default function NewMatchPage() {
                     matchType === t ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
                   }`}
                 >
-                  <span className="text-2xl mb-1">{t === 'SINGLE' ? '🧍' : '👥'}</span>
+                  {t === 'SINGLE' ? <User size={28} className="mb-1" /> : <Users size={28} className="mb-1" />}
                   <span className="font-semibold text-sm">{t === 'SINGLE' ? 'Simple' : 'Double'}</span>
                 </button>
               ))}
@@ -115,9 +115,9 @@ export default function NewMatchPage() {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Mode de saisie</h2>
             <div className="grid grid-cols-2 gap-3">
               {([
-                { value: 'LIVE', label: 'En direct', desc: 'Point par point', icon: '🔴' },
-                { value: 'MANUAL', label: 'Résultat final', desc: 'Saisir le score', icon: '📝' },
-              ] as const).map(({ value, label, desc, icon }) => (
+                { value: 'LIVE', label: 'En direct', desc: 'Point par point', Icon: Radio },
+                { value: 'MANUAL', label: 'Résultat final', desc: 'Saisir le score', Icon: ClipboardList },
+              ] as const).map(({ value, label, desc, Icon }) => (
                 <button
                   key={value}
                   type="button"
@@ -126,7 +126,7 @@ export default function NewMatchPage() {
                     mode === value ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
                   }`}
                 >
-                  <span className="text-2xl mb-1">{icon}</span>
+                  <Icon size={28} className="mb-1" />
                   <span className="font-semibold text-sm">{label}</span>
                   <span className="text-xs mt-0.5 opacity-70">{desc}</span>
                 </button>
