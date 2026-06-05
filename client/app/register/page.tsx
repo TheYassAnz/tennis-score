@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
+import PasswordInput from '@/components/PasswordInput'
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -71,14 +72,10 @@ export default function RegisterPage() {
             <label className="block text-sm font-medium text-gray-300 mb-1.5">
               Mot de passe
             </label>
-            <input
-              type="password"
+            <PasswordInput
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              onChange={setPassword}
               autoComplete="new-password"
-              className="w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-3.5 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-              placeholder="••••••••"
             />
           </div>
 

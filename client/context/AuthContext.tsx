@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 interface AuthContextValue {
   user: User | null
   loading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (identifier: string, password: string) => Promise<void>
   register: (username: string, email: string, password: string) => Promise<void>
   logout: () => void
 }
@@ -31,8 +31,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .finally(() => setLoading(false))
   }, [])
 
-  async function login(email: string, password: string) {
-    const { user, token } = await api.login({ email, password })
+  async function login(identifier: string, password: string) {
+    const { user, token } = await api.login({ identifier, password })
     localStorage.setItem('token', token)
     setUser(user)
     router.push('/dashboard')
