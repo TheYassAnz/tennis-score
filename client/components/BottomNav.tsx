@@ -15,7 +15,7 @@ export default function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 bg-gray-900 border-t border-gray-800 z-50 safe-area-bottom">
+    <nav className="fixed bottom-0 inset-x-0 bg-nav-theme border-t border-theme z-50">
       <div className="flex">
         {links.map(({ href, icon: Icon, label }) => {
           const active = pathname === href
@@ -24,7 +24,7 @@ export default function BottomNav() {
               key={href}
               href={href}
               className={`flex flex-1 flex-col items-center gap-1 py-3 text-xs transition-colors ${
-                active ? 'text-green-400' : 'text-gray-500'
+                active ? 'text-primary' : 'text-muted'
               }`}
             >
               <Icon size={22} strokeWidth={active ? 2.5 : 1.8} />

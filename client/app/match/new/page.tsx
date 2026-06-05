@@ -81,20 +81,18 @@ export default function NewMatchPage() {
 
   return (
     <AuthGuard>
-      <div className="flex flex-col min-h-full pb-8">
+      <div className="flex flex-col min-h-full pb-8 bg-page">
         <header className="flex items-center gap-3 px-4 pt-12 pb-6">
-          <button onClick={() => router.back()} className="p-2 rounded-full bg-gray-800 text-gray-400">
+          <button onClick={() => router.back()} className="p-2 rounded-full bg-surface-2 border border-theme text-muted">
             <ChevronLeft size={20} />
           </button>
-          <h1 className="text-lg font-bold text-white">Nouveau match</h1>
+          <h1 className="text-lg font-bold text-body">Nouveau match</h1>
         </header>
 
         <form onSubmit={handleSubmit} className="px-4 space-y-6 flex-1">
           {/* Type */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-              Format
-            </h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Format</h2>
             <div className="grid grid-cols-2 gap-3">
               {(['SINGLE', 'DOUBLE'] as MatchType[]).map((t) => (
                 <button
@@ -102,9 +100,7 @@ export default function NewMatchPage() {
                   type="button"
                   onClick={() => setMatchType(t)}
                   className={`flex flex-col items-center justify-center rounded-2xl py-5 border-2 transition ${
-                    matchType === t
-                      ? 'border-green-500 bg-green-500/10 text-green-400'
-                      : 'border-gray-800 bg-gray-900 text-gray-400'
+                    matchType === t ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
                   }`}
                 >
                   <span className="text-2xl mb-1">{t === 'SINGLE' ? '🧍' : '👥'}</span>
@@ -116,9 +112,7 @@ export default function NewMatchPage() {
 
           {/* Mode */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-              Mode de saisie
-            </h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Mode de saisie</h2>
             <div className="grid grid-cols-2 gap-3">
               {([
                 { value: 'LIVE', label: 'En direct', desc: 'Point par point', icon: '🔴' },
@@ -129,9 +123,7 @@ export default function NewMatchPage() {
                   type="button"
                   onClick={() => setMode(value)}
                   className={`flex flex-col items-center justify-center rounded-2xl py-5 border-2 transition ${
-                    mode === value
-                      ? 'border-green-500 bg-green-500/10 text-green-400'
-                      : 'border-gray-800 bg-gray-900 text-gray-400'
+                    mode === value ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
                   }`}
                 >
                   <span className="text-2xl mb-1">{icon}</span>
@@ -144,13 +136,10 @@ export default function NewMatchPage() {
 
           {/* Players */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-              Joueurs
-            </h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Joueurs</h2>
             <div className="space-y-4">
-              {/* HOME */}
-              <div className="rounded-2xl bg-gray-900 border border-gray-800 p-4">
-                <p className="text-xs font-semibold text-blue-400 uppercase mb-3">Équipe A</p>
+              <div className="rounded-2xl bg-surface border border-theme p-4">
+                <p className="text-xs font-semibold text-primary uppercase mb-3">Équipe A</p>
                 <div className="space-y-2">
                   {homeSlots.map((slot, i) => {
                     const globalIdx = slots.indexOf(slot)
@@ -169,9 +158,8 @@ export default function NewMatchPage() {
                 </div>
               </div>
 
-              {/* AWAY */}
-              <div className="rounded-2xl bg-gray-900 border border-gray-800 p-4">
-                <p className="text-xs font-semibold text-orange-400 uppercase mb-3">Équipe B</p>
+              <div className="rounded-2xl bg-surface border border-theme p-4">
+                <p className="text-xs font-semibold text-accent uppercase mb-3">Équipe B</p>
                 <div className="space-y-2">
                   {awaySlots.map((slot, i) => {
                     const globalIdx = slots.indexOf(slot)
@@ -201,7 +189,7 @@ export default function NewMatchPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-green-600 py-4 font-semibold text-white transition hover:bg-green-500 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full rounded-xl bg-primary py-4 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <Check size={20} />
             {loading ? 'Création...' : 'Démarrer le match'}
@@ -213,30 +201,20 @@ export default function NewMatchPage() {
 }
 
 function PlayerSelect({
-  label,
-  value,
-  users,
-  allUsers,
-  onChange,
-  locked,
+  label, value, users, allUsers, onChange, locked,
 }: {
-  label: string
-  value: string
-  users: User[]
-  allUsers: User[]
-  onChange: (id: string) => void
-  locked: boolean
+  label: string; value: string; users: User[]; allUsers: User[]; onChange: (id: string) => void; locked: boolean
 }) {
   const currentUser = allUsers.find((u) => u.id === value)
 
   if (locked && currentUser) {
     return (
-      <div className="flex items-center gap-3 rounded-xl bg-gray-800/50 px-4 py-3">
-        <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-sm font-bold shrink-0">
+      <div className="flex items-center gap-3 rounded-xl bg-surface-2 border border-theme px-4 py-3">
+        <div className="h-8 w-8 rounded-full bg-primary-subtle flex items-center justify-center text-primary text-sm font-bold shrink-0">
           {currentUser.username[0].toUpperCase()}
         </div>
-        <span className="text-white text-sm font-medium">{currentUser.username}</span>
-        <span className="ml-auto text-xs text-green-400">Moi</span>
+        <span className="text-body text-sm font-medium">{currentUser.username}</span>
+        <span className="ml-auto text-xs text-primary">Moi</span>
       </div>
     )
   }
@@ -245,13 +223,11 @@ function PlayerSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-3 text-white focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 text-sm"
+      className="input-theme w-full rounded-xl px-4 py-3 text-sm"
     >
       <option value="">{label}...</option>
       {users.map((u) => (
-        <option key={u.id} value={u.id}>
-          {u.username}
-        </option>
+        <option key={u.id} value={u.id}>{u.username}</option>
       ))}
     </select>
   )

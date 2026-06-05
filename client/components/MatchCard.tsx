@@ -21,14 +21,12 @@ export default function MatchCard({ match }: Props) {
   const isWin = match.status === 'COMPLETED' && match.winnerSide === mySide
   const isLoss = match.status === 'COMPLETED' && match.winnerSide !== mySide && mySide
 
-  const score = match.sets
-    .map((s) => `${s.homeGames}-${s.awayGames}`)
-    .join('  ')
+  const score = match.sets.map((s) => `${s.homeGames}-${s.awayGames}`).join('  ')
 
   return (
     <Link
       href={`/match/${match.id}`}
-      className="block rounded-2xl bg-gray-900 border border-gray-800 p-4 active:scale-95 transition-transform"
+      className="block rounded-2xl bg-surface border border-theme p-4 active:scale-95 transition-transform"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -37,24 +35,24 @@ export default function MatchCard({ match }: Props) {
               match.status === 'IN_PROGRESS'
                 ? 'bg-yellow-500/20 text-yellow-400'
                 : isWin
-                ? 'bg-green-500/20 text-green-400'
+                ? 'bg-primary-subtle text-primary'
                 : isLoss
                 ? 'bg-red-500/20 text-red-400'
-                : 'bg-gray-700 text-gray-400'
+                : 'bg-surface-2 text-muted'
             }`}>
               {match.status === 'IN_PROGRESS' ? 'En cours' : isWin ? 'Victoire' : isLoss ? 'Défaite' : 'Terminé'}
             </span>
-            <span className="text-xs text-gray-600">
+            <span className="text-xs text-muted">
               {match.type === 'DOUBLE' ? 'Double' : 'Simple'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <p className={`font-semibold text-sm truncate ${mySide === 'HOME' ? 'text-white' : 'text-gray-400'}`}>
+            <p className={`font-semibold text-sm truncate ${mySide === 'HOME' ? 'text-body' : 'text-muted'}`}>
               {homePlayers.join(' / ')}
             </p>
-            <p className="text-xs text-gray-600">vs</p>
-            <p className={`font-semibold text-sm truncate ${mySide === 'AWAY' ? 'text-white' : 'text-gray-400'}`}>
+            <p className="text-xs text-muted">vs</p>
+            <p className={`font-semibold text-sm truncate ${mySide === 'AWAY' ? 'text-body' : 'text-muted'}`}>
               {awayPlayers.join(' / ')}
             </p>
           </div>
@@ -62,13 +60,11 @@ export default function MatchCard({ match }: Props) {
 
         <div className="text-right shrink-0">
           {score ? (
-            <p className="font-mono text-sm text-white whitespace-pre">{score}</p>
+            <p className="font-mono text-sm text-body whitespace-pre">{score}</p>
           ) : (
-            <p className="text-xs text-gray-600">—</p>
+            <p className="text-xs text-muted">—</p>
           )}
-          <p className="text-xs text-gray-600 mt-1">
-            {formatDistanceToNow(match.createdAt)}
-          </p>
+          <p className="text-xs text-muted mt-1">{formatDistanceToNow(match.createdAt)}</p>
         </div>
       </div>
     </Link>
