@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
+import { Target } from 'lucide-react'
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -34,7 +35,11 @@ export default function RegisterPage() {
     <div className="flex min-h-full flex-col items-center justify-center px-6 py-12 bg-page">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
-          <div className="text-5xl mb-3">🎾</div>
+          <div className="flex justify-center mb-4">
+            <div className="p-4 rounded-2xl bg-primary-subtle">
+              <Target size={36} className="text-primary" strokeWidth={1.5} />
+            </div>
+          </div>
           <h1 className="text-2xl font-bold text-body">Créer un compte</h1>
           <p className="mt-1 text-sm text-muted">Rejoignez votre club</p>
         </div>

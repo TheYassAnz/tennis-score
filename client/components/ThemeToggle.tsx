@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useTheme, GrandSlam, SLAM_META, ColorMode } from '@/context/ThemeContext'
 import { Sun, Moon, Palette, Check, X } from 'lucide-react'
+import ReactCountryFlag from 'react-country-flag'
 
 export default function ThemeToggle() {
   const { theme, mode, setTheme, toggleMode } = useTheme()
@@ -20,10 +21,8 @@ export default function ThemeToggle() {
 
       {open && (
         <div className="fixed inset-0 z-60 flex items-end justify-center">
-          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
 
-          {/* Sheet */}
           <div className="relative w-full max-w-md rounded-t-3xl bg-surface border-t border-theme p-6 space-y-5 overflow-y-auto max-h-[90vh] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
             <div className="flex items-center justify-between">
               <h2 className="font-bold text-base text-body">Thème</h2>
@@ -46,7 +45,11 @@ export default function ThemeToggle() {
                       borderColor: isActive ? meta.primary : 'var(--c-border)',
                     }}
                   >
-                    <span className="text-2xl mb-1">{meta.flag}</span>
+                    <ReactCountryFlag
+                      countryCode={meta.countryCode}
+                      svg
+                      style={{ width: '28px', height: '21px', marginBottom: '6px', borderRadius: '3px' }}
+                    />
                     <span className="font-semibold text-sm text-body">{meta.label}</span>
                     <span className="text-xs mt-0.5 text-muted">{meta.court}</span>
                     {isActive && (

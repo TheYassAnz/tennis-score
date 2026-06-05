@@ -5,10 +5,10 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 export type GrandSlam = 'roland-garros' | 'wimbledon' | 'us-open' | 'australian-open'
 export type ColorMode = 'dark' | 'light'
 
-export const SLAM_META: Record<GrandSlam, { label: string; flag: string; court: string; primary: string; bg: string; surface: string }> = {
+export const SLAM_META: Record<GrandSlam, { label: string; countryCode: string; court: string; primary: string; bg: string; surface: string }> = {
   'roland-garros': {
     label: 'Roland Garros',
-    flag: '🇫🇷',
+    countryCode: 'FR',
     court: 'Terre battue',
     primary: '#D4541E',
     bg: '#1E1008',
@@ -16,7 +16,7 @@ export const SLAM_META: Record<GrandSlam, { label: string; flag: string; court: 
   },
   wimbledon: {
     label: 'Wimbledon',
-    flag: '🇬🇧',
+    countryCode: 'GB',
     court: 'Gazon',
     primary: '#4CAF50',
     bg: '#0D1A0D',
@@ -24,7 +24,7 @@ export const SLAM_META: Record<GrandSlam, { label: string; flag: string; court: 
   },
   'us-open': {
     label: 'US Open',
-    flag: '🇺🇸',
+    countryCode: 'US',
     court: 'Surface dure',
     primary: '#418FDE',
     bg: '#081828',
@@ -32,7 +32,7 @@ export const SLAM_META: Record<GrandSlam, { label: string; flag: string; court: 
   },
   'australian-open': {
     label: 'Australian Open',
-    flag: '🇦🇺',
+    countryCode: 'AU',
     court: 'Surface dure',
     primary: '#00AEEF',
     bg: '#071525',

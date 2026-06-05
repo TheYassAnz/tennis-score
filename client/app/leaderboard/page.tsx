@@ -5,9 +5,9 @@ import { api, LeaderboardEntry } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
-import { Trophy } from 'lucide-react'
+import { Trophy, Medal } from 'lucide-react'
 
-const medals = ['🥇', '🥈', '🥉']
+const medalColors = ['#F59E0B', '#9CA3AF', '#B45309']
 
 export default function LeaderboardPage() {
   const { user } = useAuth()
@@ -45,11 +45,11 @@ export default function LeaderboardPage() {
                     isMe ? 'bg-primary-subtle border-primary-subtle' : 'bg-surface border-theme'
                   }`}
                 >
-                  <div className="w-8 text-center shrink-0">
+                  <div className="w-8 flex items-center justify-center shrink-0">
                     {i < 3 ? (
-                      <span className="text-xl">{medals[i]}</span>
+                      <Medal size={22} style={{ color: medalColors[i] }} strokeWidth={1.75} />
                     ) : (
-                      <span className="text-muted font-bold">{i + 1}</span>
+                      <span className="text-muted font-bold text-sm">{i + 1}</span>
                     )}
                   </div>
 

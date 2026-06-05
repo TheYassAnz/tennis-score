@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { GrandSlam, ColorMode, SLAM_META, useTheme } from '@/context/ThemeContext'
-import { Sun, Moon, Check } from 'lucide-react'
+import { Sun, Moon, Check, Target } from 'lucide-react'
+import ReactCountryFlag from 'react-country-flag'
 
 export default function OnboardingTheme() {
   const { completeOnboarding } = useTheme()
@@ -18,7 +19,11 @@ export default function OnboardingTheme() {
       <div className="w-full max-w-sm flex flex-col gap-6">
         {/* Header */}
         <div className="text-center">
-          <div className="text-5xl mb-3">🎾</div>
+          <div className="flex items-center justify-center mb-3">
+            <div className="p-4 rounded-2xl" style={{ backgroundColor: `${SLAM_META[selected].primary}22` }}>
+              <Target size={36} style={{ color: SLAM_META[selected].primary }} strokeWidth={1.5} />
+            </div>
+          </div>
           <h1 className="text-2xl font-bold text-white">Tennis Score</h1>
           <p className="mt-1 text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
             Choisis ton Grand Chelem préféré
@@ -39,7 +44,11 @@ export default function OnboardingTheme() {
                   borderColor: isActive ? meta.primary : 'rgba(255,255,255,0.12)',
                 }}
               >
-                <span className="text-3xl mb-2">{meta.flag}</span>
+                <ReactCountryFlag
+                  countryCode={meta.countryCode}
+                  svg
+                  style={{ width: '32px', height: '24px', marginBottom: '8px', borderRadius: '3px' }}
+                />
                 <span className="font-semibold text-sm text-white">{meta.label}</span>
                 <span className="text-xs mt-0.5" style={{ color: isActive ? meta.primary : 'rgba(255,255,255,0.4)' }}>
                   {meta.court}
@@ -75,8 +84,7 @@ export default function OnboardingTheme() {
         </div>
 
         {/* Preview band */}
-        <div className="rounded-2xl overflow-hidden border"
-          style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           <div className="h-2" style={{ backgroundColor: SLAM_META[selected].primary }} />
           <div className="px-4 py-3 flex items-center justify-between"
             style={{ backgroundColor: SLAM_META[selected].surface }}>
