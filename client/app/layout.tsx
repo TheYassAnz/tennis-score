@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist } from 'next/font/google'
+import { Barlow, Barlow_Condensed } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
+const barlow = Barlow({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-barlow',
+  display: 'swap',
+})
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-barlow-condensed',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Tennis Score',
@@ -17,7 +29,6 @@ export const viewport: Viewport = {
   themeColor: '#040C18',
 }
 
-// Inline script: apply theme before first paint to avoid flash
 const themeScript = `
 try {
   var t = localStorage.getItem('tennis-theme') || 'us-open';
@@ -29,7 +40,7 @@ try {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={geist.variable} suppressHydrationWarning>
+    <html lang="fr" className={`${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

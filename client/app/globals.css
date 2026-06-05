@@ -1,7 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist);
+  --font-sans: var(--font-barlow), system-ui, sans-serif;
+  --font-condensed: var(--font-barlow-condensed), system-ui, sans-serif;
+}
+
+/* Barlow Condensed : titres + grands textes (scores, stats) */
+h1, h2, h3, h4,
+.text-lg, .text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl {
+  font-family: var(--font-barlow-condensed), system-ui, sans-serif;
+  letter-spacing: 0.03em;
+}
+
+/* Barlow pour tout le reste */
+body, input, select, button, textarea {
+  font-family: var(--font-barlow), system-ui, sans-serif;
 }
 
 /* ── Theme utility classes (mapped to CSS vars) ── */
