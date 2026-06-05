@@ -19,12 +19,12 @@ export default function ThemeToggle() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div className="fixed inset-0 z-60 flex items-end justify-center">
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
 
           {/* Sheet */}
-          <div className="relative w-full max-w-md rounded-t-3xl bg-surface border-t border-theme p-6 pb-10 space-y-5">
+          <div className="relative w-full max-w-md rounded-t-3xl bg-surface border-t border-theme p-6 space-y-5 overflow-y-auto max-h-[90vh] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
             <div className="flex items-center justify-between">
               <h2 className="font-bold text-base text-body">Thème</h2>
               <button onClick={() => setOpen(false)} className="p-1 text-muted">
