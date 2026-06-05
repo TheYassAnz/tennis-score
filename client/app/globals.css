@@ -1,5 +1,170 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --font-sans: var(--font-geist);
+}
+
+/* ── Theme utility classes (mapped to CSS vars) ── */
+
+.bg-page        { background-color: var(--c-bg); }
+.bg-surface     { background-color: var(--c-surface); }
+.bg-surface-2   { background-color: var(--c-surface-2); }
+.bg-primary     { background-color: var(--c-primary); }
+.bg-primary-subtle { background-color: var(--c-primary-subtle); }
+.bg-nav-theme   { background-color: var(--c-nav); }
+
+.text-body      { color: var(--c-text); }
+.text-muted     { color: var(--c-text-muted); }
+.text-primary   { color: var(--c-primary); }
+.text-accent    { color: var(--c-accent); }
+
+.border-theme         { border-color: var(--c-border); }
+.border-primary       { border-color: var(--c-primary); }
+.border-primary-subtle { border-color: var(--c-primary-subtle); }
+
+.hover\:bg-primary-hover:hover { background-color: var(--c-primary-hover); }
+.hover\:text-primary:hover     { color: var(--c-primary); }
+
+.input-theme {
+  background-color: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.input-theme::placeholder { color: var(--c-text-muted); opacity: 1; }
+.input-theme:focus {
+  border-color: var(--c-primary);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--c-primary);
+}
+
+.spinner {
+  border-color: var(--c-border);
+  border-top-color: var(--c-primary);
+}
+
+/* ── Default (US Open Dark) ── */
+:root {
+  --c-bg: #040C18;
+  --c-surface: #081828;
+  --c-surface-2: #0D2038;
+  --c-primary: #418FDE;
+  --c-primary-hover: #5AA3EE;
+  --c-primary-subtle: rgba(65,143,222,0.15);
+  --c-text: #E8F0FA;
+  --c-text-muted: #5A7AAA;
+  --c-border: rgba(65,143,222,0.22);
+  --c-accent: #F5CF35;
+  --c-nav: #060E1E;
+}
+
+/* ── Roland Garros ── */
+[data-theme="roland-garros"][data-mode="dark"] {
+  --c-bg: #100804;
+  --c-surface: #1E1008;
+  --c-surface-2: #2C1A0E;
+  --c-primary: #D4541E;
+  --c-primary-hover: #E8651E;
+  --c-primary-subtle: rgba(212,84,30,0.18);
+  --c-text: #F5EDE8;
+  --c-text-muted: #8A6050;
+  --c-border: rgba(212,84,30,0.28);
+  --c-accent: #E8B455;
+  --c-nav: #160C06;
+}
+[data-theme="roland-garros"][data-mode="light"] {
+  --c-bg: #FBF0E6;
+  --c-surface: #FFF6EE;
+  --c-surface-2: #FFE8D6;
+  --c-primary: #C8421A;
+  --c-primary-hover: #A33515;
+  --c-primary-subtle: rgba(200,66,26,0.12);
+  --c-text: #1A0A05;
+  --c-text-muted: #7A5040;
+  --c-border: rgba(200,66,26,0.22);
+  --c-accent: #1B3A6B;
+  --c-nav: #FFF0E4;
+}
+
+/* ── Wimbledon ── */
+[data-theme="wimbledon"][data-mode="dark"] {
+  --c-bg: #060E06;
+  --c-surface: #0D1A0D;
+  --c-surface-2: #142514;
+  --c-primary: #4CAF50;
+  --c-primary-hover: #60C060;
+  --c-primary-subtle: rgba(76,175,80,0.15);
+  --c-text: #E8F5E9;
+  --c-text-muted: #6A9A6A;
+  --c-border: rgba(76,175,80,0.22);
+  --c-accent: #9C27B0;
+  --c-nav: #08100A;
+}
+[data-theme="wimbledon"][data-mode="light"] {
+  --c-bg: #F2FAF2;
+  --c-surface: #E8F5E9;
+  --c-surface-2: #DCF0DD;
+  --c-primary: #2E7D32;
+  --c-primary-hover: #1B5E20;
+  --c-primary-subtle: rgba(46,125,50,0.12);
+  --c-text: #0F2010;
+  --c-text-muted: #4A7A4A;
+  --c-border: rgba(46,125,50,0.25);
+  --c-accent: #7B1FA2;
+  --c-nav: #E4F5E4;
+}
+
+/* ── US Open ── */
+[data-theme="us-open"][data-mode="dark"] {
+  --c-bg: #040C18;
+  --c-surface: #081828;
+  --c-surface-2: #0D2038;
+  --c-primary: #418FDE;
+  --c-primary-hover: #5AA3EE;
+  --c-primary-subtle: rgba(65,143,222,0.15);
+  --c-text: #E8F0FA;
+  --c-text-muted: #5A7AAA;
+  --c-border: rgba(65,143,222,0.22);
+  --c-accent: #F5CF35;
+  --c-nav: #060E1E;
+}
+[data-theme="us-open"][data-mode="light"] {
+  --c-bg: #EEF4FD;
+  --c-surface: #E0ECFF;
+  --c-surface-2: #D0E0FF;
+  --c-primary: #1565C0;
+  --c-primary-hover: #0D47A1;
+  --c-primary-subtle: rgba(21,101,192,0.12);
+  --c-text: #0A1828;
+  --c-text-muted: #3A5A8A;
+  --c-border: rgba(21,101,192,0.22);
+  --c-accent: #F9A825;
+  --c-nav: #D8E8FF;
+}
+
+/* ── Australian Open ── */
+[data-theme="australian-open"][data-mode="dark"] {
+  --c-bg: #040C14;
+  --c-surface: #071525;
+  --c-surface-2: #0A2035;
+  --c-primary: #00AEEF;
+  --c-primary-hover: #20C0FF;
+  --c-primary-subtle: rgba(0,174,239,0.15);
+  --c-text: #E0F4FF;
+  --c-text-muted: #3A7090;
+  --c-border: rgba(0,174,239,0.22);
+  --c-accent: #FFD700;
+  --c-nav: #050F1A;
+}
+[data-theme="australian-open"][data-mode="light"] {
+  --c-bg: #E8F7FF;
+  --c-surface: #D0EFFF;
+  --c-surface-2: #B8E5FF;
+  --c-primary: #0086BF;
+  --c-primary-hover: #006090;
+  --c-primary-subtle: rgba(0,134,191,0.12);
+  --c-text: #041424;
+  --c-text-muted: #2A6080;
+  --c-border: rgba(0,134,191,0.22);
+  --c-accent: #E65100;
+  --c-nav: #C8EAFF;
 }

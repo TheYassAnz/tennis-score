@@ -26,17 +26,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-full flex-col items-center justify-center px-6 py-12">
+    <div className="flex min-h-full flex-col items-center justify-center px-6 py-12 bg-page">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
           <div className="text-5xl mb-3">🎾</div>
-          <h1 className="text-2xl font-bold text-white">Tennis Score</h1>
-          <p className="mt-1 text-sm text-gray-400">Connectez-vous à votre compte</p>
+          <h1 className="text-2xl font-bold text-body">Tennis Score</h1>
+          <p className="mt-1 text-sm text-muted">Connectez-vous à votre compte</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            <label className="block text-sm font-medium text-body mb-1.5">
               Pseudo ou email
             </label>
             <input
@@ -45,13 +45,13 @@ export default function LoginPage() {
               onChange={(e) => setIdentifier(e.target.value)}
               required
               autoComplete="username"
-              className="w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-3.5 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+              className="input-theme w-full rounded-xl px-4 py-3.5"
               placeholder="djokovic ou vous@exemple.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            <label className="block text-sm font-medium text-body mb-1.5">
               Mot de passe
             </label>
             <PasswordInput
@@ -70,15 +70,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-green-600 py-3.5 font-semibold text-white transition hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-xl bg-primary py-3.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-sm text-muted">
           Pas encore de compte ?{' '}
-          <Link href="/register" className="text-green-400 font-medium hover:text-green-300">
+          <Link href="/register" className="text-primary font-medium hover:text-primary-hover">
             S&apos;inscrire
           </Link>
         </p>

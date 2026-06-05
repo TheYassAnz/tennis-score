@@ -51,8 +51,8 @@ export default function MatchPage() {
   if (loading) {
     return (
       <AuthGuard>
-        <div className="flex h-full items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
+        <div className="flex h-full items-center justify-center bg-page">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 spinner" />
         </div>
       </AuthGuard>
     )
@@ -71,14 +71,13 @@ export default function MatchPage() {
 
   return (
     <AuthGuard>
-      <div className="flex flex-col min-h-full bg-gray-950">
-        {/* Header */}
+      <div className="flex flex-col min-h-full bg-page">
         <header className="flex items-center gap-3 px-4 pt-12 pb-4">
-          <button onClick={() => router.push('/dashboard')} className="p-2 rounded-full bg-gray-800 text-gray-400">
+          <button onClick={() => router.push('/dashboard')} className="p-2 rounded-full bg-surface-2 border border-theme text-muted">
             <ChevronLeft size={20} />
           </button>
           <div className="flex-1">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted">
               {match.type === 'DOUBLE' ? 'Double' : 'Simple'} •{' '}
               {match.mode === 'LIVE' ? 'En direct' : 'Résultat manuel'}
             </p>
@@ -87,59 +86,52 @@ export default function MatchPage() {
             <button
               onClick={undoPoint}
               disabled={scoring || !match.points?.length}
-              className="p-2 rounded-full bg-gray-800 text-gray-400 disabled:opacity-30"
+              className="p-2 rounded-full bg-surface-2 border border-theme text-muted disabled:opacity-30"
             >
               <RotateCcw size={18} />
             </button>
           )}
         </header>
 
-        {/* Match terminé */}
         {match.status === 'COMPLETED' && (
           <div className={`mx-4 rounded-2xl py-4 px-6 mb-2 flex items-center gap-3 ${
-            isWin ? 'bg-green-500/20 border border-green-500/30' : 'bg-gray-800 border border-gray-700'
+            isWin ? 'bg-primary-subtle border border-primary-subtle' : 'bg-surface border border-theme'
           }`}>
-            <CheckCircle size={20} className={isWin ? 'text-green-400' : 'text-gray-400'} />
+            <CheckCircle size={20} className={isWin ? 'text-primary' : 'text-muted'} />
             <div>
-              <p className={`font-semibold ${isWin ? 'text-green-400' : 'text-gray-300'}`}>
+              <p className={`font-semibold ${isWin ? 'text-primary' : 'text-body'}`}>
                 {isWin ? 'Victoire !' : mySide ? 'Défaite' : 'Match terminé'}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted">
                 {match.winnerSide === 'HOME' ? homeNames : awayNames} remporte le match
               </p>
             </div>
           </div>
         )}
 
-        {/* Mode MANUAL: saisie du résultat */}
         {match.mode === 'MANUAL' && match.status === 'IN_PROGRESS' ? (
           <ManualResult matchId={match.id} onDone={fetchMatch} />
         ) : (
           <>
             {/* Scoreboard */}
-            <div className="mx-4 mt-2 rounded-3xl bg-gray-900 border border-gray-800 overflow-hidden">
-              {/* Sets */}
+            <div className="mx-4 mt-2 rounded-3xl bg-surface border border-theme overflow-hidden">
               <div className="px-6 pt-6 pb-4">
                 <div className="flex items-stretch gap-0">
                   {/* Noms */}
                   <div className="flex-1 space-y-4 mr-4">
                     <div className="flex items-center gap-2 h-10">
-                      <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-sm font-bold shrink-0">
+                      <div className="h-8 w-8 rounded-full bg-primary-subtle flex items-center justify-center text-primary text-sm font-bold shrink-0">
                         {homeNames[0]?.toUpperCase()}
                       </div>
-                      <span className={`font-semibold text-sm truncate ${
-                        match.winnerSide === 'HOME' ? 'text-green-400' : 'text-white'
-                      }`}>
+                      <span className={`font-semibold text-sm truncate ${match.winnerSide === 'HOME' ? 'text-primary' : 'text-body'}`}>
                         {homeNames}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 h-10">
-                      <div className="h-8 w-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-sm font-bold shrink-0">
+                      <div className="h-8 w-8 rounded-full bg-surface-2 flex items-center justify-center text-muted text-sm font-bold shrink-0">
                         {awayNames[0]?.toUpperCase()}
                       </div>
-                      <span className={`font-semibold text-sm truncate ${
-                        match.winnerSide === 'AWAY' ? 'text-green-400' : 'text-white'
-                      }`}>
+                      <span className={`font-semibold text-sm truncate ${match.winnerSide === 'AWAY' ? 'text-primary' : 'text-body'}`}>
                         {awayNames}
                       </span>
                     </div>
@@ -152,40 +144,31 @@ export default function MatchPage() {
                       const away = 'away' in set ? set.away : set.awayGames
                       return (
                         <div key={i} className="flex flex-col items-center gap-4 w-8">
-                          <span className={`text-lg font-bold h-10 flex items-center ${
-                            home > away ? 'text-white' : 'text-gray-500'
-                          }`}>{home}</span>
-                          <span className={`text-lg font-bold h-10 flex items-center ${
-                            away > home ? 'text-white' : 'text-gray-500'
-                          }`}>{away}</span>
+                          <span className={`text-lg font-bold h-10 flex items-center ${home > away ? 'text-body' : 'text-muted'}`}>{home}</span>
+                          <span className={`text-lg font-bold h-10 flex items-center ${away > home ? 'text-body' : 'text-muted'}`}>{away}</span>
                         </div>
                       )
                     })}
 
-                    {/* Set en cours */}
                     {match.state && (
-                      <div className="flex flex-col items-center gap-4 w-10 border-l border-gray-700 pl-2">
-                        <span className="text-xl font-bold text-green-400 h-10 flex items-center">
+                      <div className="flex flex-col items-center gap-4 w-10 border-l border-theme pl-2">
+                        <span className="text-xl font-bold text-primary h-10 flex items-center">
                           {match.state.currentSet.homeGames}
                         </span>
-                        <span className="text-xl font-bold text-green-400 h-10 flex items-center">
+                        <span className="text-xl font-bold text-primary h-10 flex items-center">
                           {match.state.currentSet.awayGames}
                         </span>
                       </div>
                     )}
                   </div>
 
-                  {/* Score du jeu en cours */}
+                  {/* Score du jeu */}
                   {match.state && (
-                    <div className="flex flex-col items-center gap-4 w-14 border-l border-gray-700 pl-2">
-                      <span className={`text-2xl font-bold h-10 flex items-center ${
-                        match.state.currentGame.homeLabel === 'AD' ? 'text-yellow-400' : 'text-white'
-                      }`}>
+                    <div className="flex flex-col items-center gap-4 w-14 border-l border-theme pl-2">
+                      <span className={`text-2xl font-bold h-10 flex items-center ${match.state.currentGame.homeLabel === 'AD' ? 'text-accent' : 'text-body'}`}>
                         {match.state.currentGame.homeLabel}
                       </span>
-                      <span className={`text-2xl font-bold h-10 flex items-center ${
-                        match.state.currentGame.awayLabel === 'AD' ? 'text-yellow-400' : 'text-white'
-                      }`}>
+                      <span className={`text-2xl font-bold h-10 flex items-center ${match.state.currentGame.awayLabel === 'AD' ? 'text-accent' : 'text-body'}`}>
                         {match.state.currentGame.awayLabel}
                       </span>
                     </div>
@@ -193,26 +176,15 @@ export default function MatchPage() {
                 </div>
 
                 {match.state?.currentSet.isTiebreak && (
-                  <p className="text-center text-xs text-yellow-400 mt-3">Tie-break</p>
+                  <p className="text-center text-xs text-accent mt-3">Tie-break</p>
                 )}
               </div>
             </div>
 
-            {/* Boutons de score (mode live, match en cours) */}
             {match.mode === 'LIVE' && match.status === 'IN_PROGRESS' && (
               <div className="flex gap-3 px-4 mt-6 flex-1 items-stretch">
-                <ScoreButton
-                  label={homeNames}
-                  color="blue"
-                  onPress={() => addPoint('HOME')}
-                  disabled={scoring}
-                />
-                <ScoreButton
-                  label={awayNames}
-                  color="orange"
-                  onPress={() => addPoint('AWAY')}
-                  disabled={scoring}
-                />
+                <ScoreButton label={homeNames} side="home" onPress={() => addPoint('HOME')} disabled={scoring} />
+                <ScoreButton label={awayNames} side="away" onPress={() => addPoint('AWAY')} disabled={scoring} />
               </div>
             )}
           </>
@@ -222,30 +194,21 @@ export default function MatchPage() {
   )
 }
 
-function ScoreButton({
-  label,
-  color,
-  onPress,
-  disabled,
-}: {
-  label: string
-  color: 'blue' | 'orange'
-  onPress: () => void
-  disabled: boolean
+function ScoreButton({ label, side, onPress, disabled }: {
+  label: string; side: 'home' | 'away'; onPress: () => void; disabled: boolean
 }) {
-  const colors = {
-    blue: 'bg-blue-600 active:bg-blue-500 shadow-blue-900/40',
-    orange: 'bg-orange-600 active:bg-orange-500 shadow-orange-900/40',
-  }
-
   return (
     <button
       onClick={onPress}
       disabled={disabled}
-      className={`flex-1 rounded-3xl ${colors[color]} shadow-xl min-h-[200px] flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-50 select-none`}
+      className={`flex-1 rounded-3xl min-h-50 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-50 select-none border-2 ${
+        side === 'home'
+          ? 'bg-primary-subtle border-primary'
+          : 'bg-surface-2 border-theme'
+      }`}
     >
-      <span className="text-4xl font-bold text-white">+1</span>
-      <span className="text-sm text-white/70 font-medium px-2 text-center truncate w-full px-4">
+      <span className={`text-4xl font-bold ${side === 'home' ? 'text-primary' : 'text-body'}`}>+1</span>
+      <span className={`text-sm font-medium px-4 text-center truncate w-full ${side === 'home' ? 'text-primary' : 'text-muted'}`}>
         {label}
       </span>
     </button>
