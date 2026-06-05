@@ -5,13 +5,12 @@ import { useAuth } from '@/context/AuthContext'
 import { api, Match } from '@/lib/api'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
-import ThemeToggle from '@/components/ThemeToggle'
 import Link from 'next/link'
-import { Plus, LogOut } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import MatchCard from '@/components/MatchCard'
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const [matches, setMatches] = useState<Match[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -31,15 +30,6 @@ export default function DashboardPage() {
           <div>
             <p className="text-sm text-muted">Bonjour,</p>
             <h1 className="text-xl font-bold text-body">{user?.username} 👋</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <button
-              onClick={logout}
-              className="p-2 rounded-full bg-surface-2 border border-theme text-muted hover:text-body transition"
-            >
-              <LogOut size={18} />
-            </button>
           </div>
         </header>
 

@@ -8,7 +8,7 @@ const links = [
   { href: '/dashboard', icon: Home, label: 'Accueil' },
   { href: '/history', icon: History, label: 'Historique' },
   { href: '/leaderboard', icon: Trophy, label: 'Classement' },
-  { href: '/stats', icon: User, label: 'Stats' },
+  { href: '/profile', icon: User, label: 'Profil' },
 ]
 
 export default function BottomNav() {

@@ -5,9 +5,11 @@ import { api, UserStats } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
+import ThemeToggle from '@/components/ThemeToggle'
+import { LogOut } from 'lucide-react'
 
-export default function StatsPage() {
-  const { user } = useAuth()
+export default function ProfilePage() {
+  const { user, logout } = useAuth()
   const [stats, setStats] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,9 +21,20 @@ export default function StatsPage() {
   return (
     <AuthGuard>
       <div className="flex flex-col min-h-full pb-20 bg-page">
-        <header className="px-4 pt-12 pb-6">
-          <h1 className="text-xl font-bold text-body">Mes statistiques</h1>
-          <p className="text-sm text-muted">{user?.username}</p>
+        <header className="flex items-center justify-between px-4 pt-12 pb-6">
+          <div>
+            <h1 className="text-xl font-bold text-body">Profil</h1>
+            <p className="text-sm text-muted">{user?.username}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={logout}
+              className="p-2 rounded-full bg-surface-2 border border-theme text-muted hover:text-body transition"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
         </header>
 
         {loading ? (
@@ -40,10 +53,7 @@ export default function StatsPage() {
                 <p className="text-sm text-muted">{stats.totalMatches} matchs</p>
               </div>
               <div className="h-2 rounded-full bg-surface-2 overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: `${stats.winRate}%` }}
-                />
+                <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${stats.winRate}%` }} />
               </div>
             </div>
 
@@ -71,9 +81,7 @@ export default function StatsPage() {
             {/* Par adversaire */}
             {stats.opponents.length > 0 && (
               <div className="rounded-2xl bg-surface border border-theme p-5">
-                <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">
-                  Par adversaire
-                </p>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">Par adversaire</p>
                 <div className="space-y-3">
                   {stats.opponents.map((opp) => (
                     <div key={opp.username} className="flex items-center justify-between">
