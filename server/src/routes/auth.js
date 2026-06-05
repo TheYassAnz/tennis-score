@@ -30,12 +30,14 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email et mot de passe requis' })
+  const { identifier, password } = req.body
+  if (!identifier || !password) {
+    return res.status(400).json({ error: 'Identifiant et mot de passe requis' })
   }
 
-  const user = await prisma.user.findUnique({ where: { email } })
+  const user = await prisma.user.findFirst({
+    where: { OR: [{ email: identifier }, { username: identifier }] },
+  })
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     return res.status(401).json({ error: 'Identifiants incorrects' })
   }

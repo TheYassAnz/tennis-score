@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
+import PasswordInput from '@/components/PasswordInput'
 
 export default function LoginPage() {
   const { login } = useAuth()
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -16,7 +17,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      await login(email, password)
+      await login(identifier, password)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur de connexion')
     } finally {
@@ -35,15 +36,17 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">
+              Pseudo ou email
+            </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               required
-              autoComplete="email"
+              autoComplete="username"
               className="w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-3.5 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-              placeholder="vous@exemple.com"
+              placeholder="djokovic ou vous@exemple.com"
             />
           </div>
 
@@ -51,14 +54,10 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-300 mb-1.5">
               Mot de passe
             </label>
-            <input
-              type="password"
+            <PasswordInput
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              onChange={setPassword}
               autoComplete="current-password"
-              className="w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-3.5 text-white placeholder-gray-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-              placeholder="••••••••"
             />
           </div>
 
