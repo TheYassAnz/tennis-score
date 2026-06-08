@@ -104,6 +104,15 @@ export default function EditMatchPage() {
     setSets((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)))
   }
 
+  function adjust(index: number, field: 'homeGames' | 'awayGames', delta: number) {
+    setSets((prev) =>
+      prev.map((s, i) => {
+        if (i !== index) return s
+        return { ...s, [field]: Math.max(0, Math.min(7, s[field] + delta)) }
+      })
+    )
+  }
+
   function addSet() {
     if (sets.length < 5) setSets((prev) => [...prev, { homeGames: 0, awayGames: 0 }])
   }
@@ -253,37 +262,31 @@ export default function EditMatchPage() {
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Score</h2>
             <div className="space-y-3">
-              <div className="grid grid-cols-[1fr_auto_1fr_auto] gap-2 items-center px-2">
-                <p className="text-xs font-semibold text-primary text-center">Équipe A</p>
-                <div className="w-4" />
-                <p className="text-xs font-semibold text-accent text-center">Équipe B</p>
-                <div className="w-8" />
+              <div className="flex gap-2 items-center px-1">
+                <p className="flex-1 text-xs font-semibold text-primary text-center">Équipe A</p>
+                <div className="shrink-0 w-5" />
+                <p className="flex-1 text-xs font-semibold text-accent text-center">Équipe B</p>
+                <div className="shrink-0 w-8" />
               </div>
 
               {sets.map((set, i) => (
-                <div key={i} className="grid grid-cols-[1fr_auto_1fr_auto] gap-2 items-center">
-                  <input
-                    type="number"
-                    min={0}
-                    max={7}
+                <div key={i} className="flex gap-2 items-center">
+                  <EditScoreInput
                     value={set.homeGames}
-                    onChange={(e) => updateSet(i, 'homeGames', parseInt(e.target.value) || 0)}
-                    className="input-theme w-full rounded-xl px-3 py-4 text-center text-xl font-bold"
+                    onChange={(v) => updateSet(i, 'homeGames', v)}
+                    onAdjust={(d) => adjust(i, 'homeGames', d)}
                   />
-                  <span className="text-muted font-bold">—</span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={7}
+                  <span className="shrink-0 text-muted font-bold">—</span>
+                  <EditScoreInput
                     value={set.awayGames}
-                    onChange={(e) => updateSet(i, 'awayGames', parseInt(e.target.value) || 0)}
-                    className="input-theme w-full rounded-xl px-3 py-4 text-center text-xl font-bold"
+                    onChange={(v) => updateSet(i, 'awayGames', v)}
+                    onAdjust={(d) => adjust(i, 'awayGames', d)}
                   />
                   <button
                     type="button"
                     onClick={() => removeSet(i)}
                     disabled={sets.length <= 2}
-                    className="p-2 rounded-lg text-muted hover:text-red-400 disabled:opacity-20"
+                    className="shrink-0 p-2 rounded-lg text-muted hover:text-red-400 disabled:opacity-20"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -336,5 +339,43 @@ export default function EditMatchPage() {
         </form>
       </div>
     </AuthGuard>
+  )
+}
+
+function EditScoreInput({
+  value,
+  onChange,
+  onAdjust,
+}: {
+  value: number
+  onChange: (v: number) => void
+  onAdjust: (delta: number) => void
+}) {
+  return (
+    <div className="flex flex-1 items-center rounded-xl border border-theme overflow-hidden bg-surface">
+      <button
+        type="button"
+        onClick={() => onAdjust(-1)}
+        className="px-3 py-3 text-muted text-lg font-bold active:bg-surface-2 transition select-none"
+      >
+        −
+      </button>
+      <input
+        type="number"
+        min={0}
+        max={7}
+        value={value}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => onChange(Math.max(0, Math.min(7, parseInt(e.target.value) || 0)))}
+        className="w-0 flex-1 bg-transparent border-none outline-none text-center text-xl font-bold text-body"
+      />
+      <button
+        type="button"
+        onClick={() => onAdjust(1)}
+        className="px-3 py-3 text-muted text-lg font-bold active:bg-surface-2 transition select-none"
+      >
+        +
+      </button>
+    </div>
   )
 }
