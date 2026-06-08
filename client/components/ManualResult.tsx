@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { api, SetResult } from '@/lib/api'
+import { validateMatchSets } from '@/lib/utils'
 import { Plus, Trash2, Check } from 'lucide-react'
 
 interface Props {
@@ -39,6 +40,11 @@ export default function ManualResult({ matchId, onDone }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    const validationError = validateMatchSets(sets)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
     setLoading(true)
     setError('')
     try {
