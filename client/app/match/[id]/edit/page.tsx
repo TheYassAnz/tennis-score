@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { api, MatchWithState, User, SetResult } from '@/lib/api'
+import { validateMatchSets } from '@/lib/utils'
 import AuthGuard from '@/components/AuthGuard'
 import { useAuth } from '@/context/AuthContext'
 import { ChevronLeft, Check, User as UserIcon, Users, Radio, ClipboardList, Plus, Trash2 } from 'lucide-react'
@@ -125,6 +126,11 @@ export default function EditMatchPage() {
     e.preventDefault()
     if (slots.some((s) => !s.userId)) {
       setError('Veuillez sélectionner tous les joueurs')
+      return
+    }
+    const validationError = validateMatchSets(sets)
+    if (validationError) {
+      setError(validationError)
       return
     }
     setSaving(true)
