@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { api, MatchWithState } from '@/lib/api'
 import AuthGuard from '@/components/AuthGuard'
 import { useAuth } from '@/context/AuthContext'
-import { ChevronLeft, RotateCcw, CheckCircle } from 'lucide-react'
+import { ChevronLeft, RotateCcw, CheckCircle, Pencil, Trash2 } from 'lucide-react'
 import ManualResult from '@/components/ManualResult'
 
 export default function MatchPage() {
@@ -16,6 +16,8 @@ export default function MatchPage() {
   const [match, setMatch] = useState<MatchWithState | null>(null)
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const fetchMatch = useCallback(async () => {
     const data = await api.getMatch(id)
@@ -34,6 +36,17 @@ export default function MatchPage() {
       setMatch(updated)
     } finally {
       setScoring(false)
+    }
+  }
+
+  async function handleDelete() {
+    setDeleting(true)
+    try {
+      await api.deleteMatch(id)
+      router.push('/dashboard')
+    } catch {
+      setDeleting(false)
+      setShowDeleteModal(false)
     }
   }
 
@@ -68,6 +81,7 @@ export default function MatchPage() {
   const myPlayer = match.players.find((p) => p.userId === user?.id)
   const mySide = myPlayer?.side
   const isWin = match.status === 'COMPLETED' && match.winnerSide === mySide
+  const isCreator = match.creatorId === user?.id
 
   return (
     <AuthGuard>
@@ -91,7 +105,49 @@ export default function MatchPage() {
               <RotateCcw size={18} />
             </button>
           )}
+          {isCreator && (
+            <>
+              <button
+                onClick={() => router.push(`/match/${id}/edit`)}
+                className="p-2 rounded-full bg-surface-2 border border-theme text-muted"
+              >
+                <Pencil size={18} />
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="p-2 rounded-full bg-surface-2 border border-theme text-muted"
+              >
+                <Trash2 size={18} />
+              </button>
+            </>
+          )}
         </header>
+
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
+            <div className="bg-surface rounded-2xl p-6 border border-theme w-full max-w-sm">
+              <h3 className="text-lg font-bold text-body mb-2">Supprimer le match</h3>
+              <p className="text-sm text-muted mb-6">
+                Cette action est irréversible. Le match et tout son historique seront définitivement supprimés.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 rounded-xl py-3 border border-theme text-muted font-semibold"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 rounded-xl py-3 bg-red-500 text-white font-semibold disabled:opacity-50"
+                >
+                  {deleting ? 'Suppression...' : 'Supprimer'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {match.status === 'COMPLETED' && (
           <div className={`mx-4 rounded-2xl py-4 px-6 mb-2 flex items-center gap-3 ${
