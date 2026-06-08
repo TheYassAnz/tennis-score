@@ -65,6 +65,12 @@ export const api = {
       body: JSON.stringify({ sets }),
     }),
 
+  deleteMatch: (id: string) =>
+    request<{ success: boolean }>(`/matches/${id}`, { method: 'DELETE' }),
+
+  updateMatch: (id: string, data: UpdateMatchPayload) =>
+    request<Match>(`/matches/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
   // Stats
   getStats: (userId: string) => request<UserStats>(`/stats/${userId}`),
 
@@ -116,6 +122,7 @@ export interface Match {
   winnerSide?: 'HOME' | 'AWAY'
   createdAt: string
   completedAt?: string
+  creatorId?: string
   players: MatchPlayer[]
   sets: Set[]
 }
@@ -157,6 +164,14 @@ export interface SetResult {
   awayGames: number
   homeTiebreak?: number
   awayTiebreak?: number
+}
+
+export interface UpdateMatchPayload {
+  type?: 'SINGLE' | 'DOUBLE'
+  mode?: 'LIVE' | 'MANUAL'
+  players?: { userId: string; side: 'HOME' | 'AWAY'; position: number }[]
+  sets?: SetResult[]
+  createdAt?: string
 }
 
 export interface UserStats {
