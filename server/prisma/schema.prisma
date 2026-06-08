@@ -13,7 +13,8 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
 
-  matchPlayers MatchPlayer[]
+  matchPlayers   MatchPlayer[]
+  createdMatches Match[]       @relation("creator")
 }
 
 model Match {
@@ -24,7 +25,9 @@ model Match {
   winnerSide  Side?
   createdAt   DateTime    @default(now())
   completedAt DateTime?
+  creatorId   String?
 
+  creator User?        @relation("creator", fields: [creatorId], references: [id])
   players MatchPlayer[]
   sets    Set[]
   points  Point[]

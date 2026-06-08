@@ -15,6 +15,7 @@ router.post('/', auth, async (req, res) => {
     data: {
       type,
       mode,
+      creatorId: req.user.id,
       players: { create: players },
     },
     include: { players: { include: { user: { select: { id: true, username: true } } } } },
@@ -41,6 +42,68 @@ router.get('/:id', auth, async (req, res) => {
   }
 
   res.json({ ...match, state })
+})
+
+// Delete a match
+router.delete('/:id', auth, async (req, res) => {
+  const match = await prisma.match.findUnique({ where: { id: req.params.id } })
+  if (!match) return res.status(404).json({ error: 'Match introuvable' })
+  if (match.creatorId !== req.user.id) return res.status(403).json({ error: 'Non autorisé' })
+
+  await prisma.match.delete({ where: { id: req.params.id } })
+  res.json({ success: true })
+})
+
+// Update a match
+router.patch('/:id', auth, async (req, res) => {
+  const { type, mode, players, sets, createdAt } = req.body
+
+  const match = await prisma.match.findUnique({ where: { id: req.params.id } })
+  if (!match) return res.status(404).json({ error: 'Match introuvable' })
+  if (match.creatorId !== req.user.id) return res.status(403).json({ error: 'Non autorisé' })
+
+  const updateData = {}
+  if (type) updateData.type = type
+  if (mode) updateData.mode = mode
+  if (createdAt) updateData.createdAt = new Date(createdAt)
+
+  if (sets?.length) {
+    await prisma.set.deleteMany({ where: { matchId: match.id } })
+    await prisma.point.deleteMany({ where: { matchId: match.id } })
+
+    let homeSets = 0
+    let awaySets = 0
+    for (const s of sets) {
+      if (s.homeGames > s.awayGames) homeSets++
+      else awaySets++
+    }
+
+    await prisma.set.createMany({
+      data: sets.map((s, i) => ({ matchId: match.id, setNumber: i + 1, ...s })),
+    })
+
+    updateData.status = 'COMPLETED'
+    updateData.winnerSide = homeSets > awaySets ? 'HOME' : 'AWAY'
+    updateData.completedAt = match.completedAt || new Date()
+  }
+
+  if (players?.length) {
+    await prisma.matchPlayer.deleteMany({ where: { matchId: match.id } })
+    await prisma.matchPlayer.createMany({
+      data: players.map((p) => ({ matchId: match.id, ...p })),
+    })
+  }
+
+  const updated = await prisma.match.update({
+    where: { id: match.id },
+    data: updateData,
+    include: {
+      players: { include: { user: { select: { id: true, username: true } } } },
+      sets: { orderBy: { setNumber: 'asc' } },
+    },
+  })
+
+  res.json(updated)
 })
 
 // Add a live point
