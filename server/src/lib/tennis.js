@@ -2,7 +2,6 @@
 const POINT_LABELS = ['0', '15', '30', '40']
 
 function computeMatchState(points, sets) {
-  // Rebuild full state from stored sets + live points of current game
   const completedSets = sets.map((s) => ({
     setNumber: s.setNumber,
     home: s.homeGames,
@@ -13,31 +12,28 @@ function computeMatchState(points, sets) {
   const currentSetNumber = completedSets.length + 1
   const currentSetPoints = points.filter((p) => p.setNumber === currentSetNumber)
 
-  // Count games in current set
   let homeGames = 0
   let awayGames = 0
   let gameNumber = 1
-  let isTiebreak = false
 
-  for (const p of currentSetPoints) {
-    if (p.gameNumber > gameNumber) {
-      gameNumber = p.gameNumber
+  const gameNums = [...new Set(currentSetPoints.map((p) => p.gameNumber))].sort((a, b) => a - b)
+
+  for (const gn of gameNums) {
+    const gpts = currentSetPoints.filter((p) => p.gameNumber === gn)
+    const winner = getGameWinner(gpts, homeGames, awayGames)
+    if (winner === 'HOME') {
+      homeGames++
+      gameNumber = gn + 1
+    } else if (winner === 'AWAY') {
+      awayGames++
+      gameNumber = gn + 1
+    } else {
+      gameNumber = gn
+      break
     }
   }
 
-  // Rebuild game-by-game tally for current set
-  const gamePoints = currentSetPoints.filter((p) => p.gameNumber < gameNumber)
-  // count completed games
-  const gameNums = [...new Set(currentSetPoints.map((p) => p.gameNumber))].sort((a, b) => a - b)
-
-  for (const gn of gameNums.slice(0, -1)) {
-    const gpts = currentSetPoints.filter((p) => p.gameNumber === gn)
-    const winner = getGameWinner(gpts, homeGames, awayGames)
-    if (winner === 'HOME') homeGames++
-    else if (winner === 'AWAY') awayGames++
-  }
-
-  isTiebreak = homeGames === 6 && awayGames === 6
+  const isTiebreak = homeGames === 6 && awayGames === 6
 
   const currentGamePoints = currentSetPoints.filter((p) => p.gameNumber === gameNumber)
   const homePoints = currentGamePoints.filter((p) => p.scorer === 'HOME').length
