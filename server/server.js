@@ -15,5 +15,9 @@ app.use('/api/users', require('./src/routes/users'))
 
 app.get('/api/health', (_, res) => res.json({ ok: true }))
 
-const PORT = process.env.PORT || 4000
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+module.exports = app
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 4000
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+}
