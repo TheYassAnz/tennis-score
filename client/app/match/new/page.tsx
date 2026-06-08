@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import { api, User } from '@/lib/api'
 import AuthGuard from '@/components/AuthGuard'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, Check, User, Users, Radio, ClipboardList } from 'lucide-react'
+import { ChevronLeft, Check, User as UserIcon, Users, Radio, ClipboardList } from 'lucide-react'
 
 type MatchType = 'SINGLE' | 'DOUBLE'
 type MatchMode = 'LIVE' | 'MANUAL'
@@ -103,7 +103,7 @@ export default function NewMatchPage() {
                     matchType === t ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
                   }`}
                 >
-                  {t === 'SINGLE' ? <User size={28} className="mb-1" /> : <Users size={28} className="mb-1" />}
+                  {t === 'SINGLE' ? <UserIcon size={28} className="mb-1" /> : <Users size={28} className="mb-1" />}
                   <span className="font-semibold text-sm">{t === 'SINGLE' ? 'Simple' : 'Double'}</span>
                 </button>
               ))}
