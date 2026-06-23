@@ -192,6 +192,8 @@ export interface UserStats {
 export interface LeaderboardEntry {
   userId: string
   username: string
+  firstName: string
+  lastName: string
   wins: number
   losses: number
   total: number

@@ -23,8 +23,10 @@ export default function ProfilePage() {
       <div className="flex flex-col min-h-full pb-20 bg-page">
         <header className="flex items-center justify-between px-4 pt-12 pb-6">
           <div>
-            <h1 className="text-xl font-bold text-body">Profil</h1>
-            <p className="text-sm text-muted">{user?.username}</p>
+            <h1 className="text-xl font-bold text-body">
+              {user?.firstName} {user?.lastName}
+            </h1>
+            <p className="text-sm text-muted">@{user?.username}</p>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />

@@ -4,7 +4,7 @@ const auth = require('../middleware/auth')
 
 router.get('/', auth, async (req, res) => {
   const users = await prisma.user.findMany({
-    select: { id: true, username: true },
+    select: { id: true, username: true, firstName: true, lastName: true },
   })
 
   const leaderboard = await Promise.all(
@@ -29,6 +29,8 @@ router.get('/', auth, async (req, res) => {
       return {
         userId: user.id,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         wins,
         losses,
         total: matches.length,

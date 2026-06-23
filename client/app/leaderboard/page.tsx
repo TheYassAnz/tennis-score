@@ -59,16 +59,16 @@ export default function LeaderboardPage() {
                   <div className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
                     isMe ? 'bg-primary-subtle text-primary' : 'bg-surface-2 text-muted'
                   }`}>
-                    {entry.username[0].toUpperCase()}
+                    {entry.firstName[0].toUpperCase()}{entry.lastName[0].toUpperCase()}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <p className={`font-semibold truncate ${isMe ? 'text-primary' : 'text-body'}`}>
-                      {entry.username}
+                      {entry.firstName} {entry.lastName}
                       {isMe && <span className="text-xs ml-2 opacity-60">moi</span>}
                     </p>
                     <p className="text-xs text-muted mt-0.5">
-                      {entry.total} match{entry.total !== 1 ? 's' : ''}
+                      @{entry.username} · {entry.total} match{entry.total !== 1 ? 's' : ''}
                     </p>
                   </div>
 
