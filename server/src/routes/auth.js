@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const prisma = require('../lib/prisma')
+const { sendPasswordReset } = require('../lib/mailer')
 
 router.post('/register', async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body
@@ -57,6 +59,59 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
     select: { id: true, username: true, email: true, firstName: true, lastName: true, createdAt: true },
   })
   res.json(user)
+})
+
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body
+  // Réponse identique que l'email existe ou non (pas de user enumeration)
+  const genericResponse = res.json({ message: 'Si cet email existe, un lien a été envoyé.' })
+
+  const user = await prisma.user.findUnique({ where: { email } })
+  if (!user) return genericResponse
+
+  const token = crypto.randomBytes(32).toString('hex')
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
+  const expiry = new Date(Date.now() + 15 * 60 * 1000)
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { resetToken: tokenHash, resetTokenExpiry: expiry },
+  })
+
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${token}`
+  await sendPasswordReset({ to: user.email, firstName: user.firstName, resetUrl })
+
+  return genericResponse
+})
+
+router.post('/reset-password', async (req, res) => {
+  const { token, password } = req.body
+  if (!token || !password) {
+    return res.status(400).json({ error: 'Token et mot de passe requis' })
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Le mot de passe doit faire au moins 6 caractères' })
+  }
+
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
+  const user = await prisma.user.findFirst({
+    where: {
+      resetToken: tokenHash,
+      resetTokenExpiry: { gt: new Date() },
+    },
+  })
+
+  if (!user) {
+    return res.status(400).json({ error: 'Lien invalide ou expiré' })
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10)
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { passwordHash, resetToken: null, resetTokenExpiry: null },
+  })
+
+  res.json({ message: 'Mot de passe réinitialisé avec succès' })
 })
 
 module.exports = router
