@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Interaction
+
+- Always start interactions with my name : 'Yassine' and ask questions to clarify the request.
+
 ## Stack
 
 - **client/** — Next.js 15 (App Router) + TypeScript + Tailwind CSS
@@ -11,12 +15,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 **Client** (in `client/`):
+
 ```
 npm run dev       # localhost:3000
 npm run build
 ```
 
 **Server** (in `server/`):
+
 ```
 npm run dev       # nodemon, port 4000
 npm run start
@@ -28,12 +34,14 @@ npm run db:generate  # regenerate Prisma client after schema changes
 ## Environment variables
 
 **server/.env** (copy from `.env.example`):
+
 - `DATABASE_URL` — PostgreSQL connection string from Railway
 - `JWT_SECRET` — random secret
 - `PORT` — default 4000
 - `CLIENT_URL` — CORS origin (default `http://localhost:3000`)
 
 **client/.env.local**:
+
 - `NEXT_PUBLIC_API_URL` — e.g. `http://localhost:4000/api`
 
 ## Architecture
@@ -59,6 +67,7 @@ src/
 **Tennis logic** (`src/lib/tennis.js`): stateless functions that take `points[]` and `sets[]` arrays and return the current game/set/match state. No DB calls. Used by the `/point` route after each point is added.
 
 **Scoring flow** (live mode):
+
 1. Client calls `POST /matches/:id/point { scorer: 'HOME'|'AWAY' }`
 2. Server fetches all existing points + completed sets
 3. Calls `resolvePoint()` to check if game/set/match is over
