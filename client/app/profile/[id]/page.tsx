@@ -13,6 +13,7 @@ export default function PublicProfilePage() {
   const { user } = useAuth()
   const router = useRouter()
   const [stats, setStats] = useState<UserStats | null>(null)
+  const [displayName, setDisplayName] = useState<string>('')
   const [username, setUsername] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -28,7 +29,12 @@ export default function PublicProfilePage() {
       .then(([statsData, users]) => {
         setStats(statsData)
         const found = users.find((u) => u.id === id)
-        setUsername(found?.username ?? 'Joueur')
+        if (found) {
+          setDisplayName(`${found.firstName} ${found.lastName}`)
+          setUsername(found.username)
+        } else {
+          setDisplayName('Joueur')
+        }
       })
       .catch(() => setError('Profil introuvable'))
       .finally(() => setLoading(false))
@@ -45,8 +51,8 @@ export default function PublicProfilePage() {
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-body">{username || '…'}</h1>
-            <p className="text-sm text-muted">Profil joueur</p>
+            <h1 className="text-xl font-bold text-body">{displayName || '…'}</h1>
+            {username && <p className="text-sm text-muted">@{username}</p>}
           </div>
         </header>
 
