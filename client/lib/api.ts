@@ -22,7 +22,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   // Auth
-  register: (data: { username: string; email: string; password: string }) =>
+  register: (data: { username: string; email: string; password: string; firstName?: string; lastName?: string }) =>
     request<{ user: User; token: string }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -83,6 +83,8 @@ export interface User {
   id: string
   username: string
   email: string
+  firstName?: string | null
+  lastName?: string | null
   createdAt?: string
 }
 

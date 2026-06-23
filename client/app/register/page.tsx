@@ -8,6 +8,8 @@ import { Target } from 'lucide-react'
 
 export default function RegisterPage() {
   const { register } = useAuth()
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,7 +25,7 @@ export default function RegisterPage() {
     }
     setLoading(true)
     try {
-      await register(username, email, password)
+      await register(username, email, password, firstName, lastName)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erreur lors de l'inscription")
     } finally {
@@ -45,6 +47,33 @@ export default function RegisterPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium text-body mb-1.5">Prénom</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                autoComplete="given-name"
+                className="input-theme w-full rounded-xl px-4 py-3.5"
+                placeholder="Novak"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-body mb-1.5">Nom</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                autoComplete="family-name"
+                className="input-theme w-full rounded-xl px-4 py-3.5"
+                placeholder="Djokovic"
+              />
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-body mb-1.5">
               Nom d&apos;utilisateur
@@ -52,7 +81,7 @@ export default function RegisterPage() {
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
               required
               autoComplete="username"
               className="input-theme w-full rounded-xl px-4 py-3.5"
