@@ -71,6 +71,19 @@ export const api = {
   updateMatch: (id: string, data: UpdateMatchPayload) =>
     request<Match>(`/matches/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
+  // Auth — reset password
+  forgotPassword: (email: string) =>
+    request<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    }),
+
+  resetPassword: (token: string, password: string) =>
+    request<{ message: string }>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, password }),
+    }),
+
   // Stats
   getStats: (userId: string) => request<UserStats>(`/stats/${userId}`),
 
