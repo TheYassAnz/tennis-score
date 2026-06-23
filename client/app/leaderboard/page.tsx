@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { api, LeaderboardEntry } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
@@ -38,11 +39,13 @@ export default function LeaderboardPage() {
           ) : (
             entries.map((entry, i) => {
               const isMe = entry.userId === user?.id
+              const href = isMe ? '/profile' : `/profile/${entry.userId}`
               return (
-                <div
+                <Link
                   key={entry.userId}
-                  className={`flex items-center gap-4 rounded-2xl px-4 py-4 border transition ${
-                    isMe ? 'bg-primary-subtle border-primary-subtle' : 'bg-surface border-theme'
+                  href={href}
+                  className={`flex items-center gap-4 rounded-2xl px-4 py-4 border transition active:scale-[0.98] ${
+                    isMe ? 'bg-primary-subtle border-primary-subtle' : 'bg-surface border-theme hover:border-primary/40'
                   }`}
                 >
                   <div className="w-8 flex items-center justify-center shrink-0">
@@ -77,7 +80,7 @@ export default function LeaderboardPage() {
                     </p>
                     <p className="text-xs text-muted">{entry.winRate}%</p>
                   </div>
-                </div>
+                </Link>
               )
             })
           )}
