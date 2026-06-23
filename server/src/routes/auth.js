@@ -61,6 +61,57 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
   res.json(user)
 })
 
+router.patch('/me', require('../middleware/auth'), async (req, res) => {
+  const { firstName, lastName, username, email, currentPassword, newPassword } = req.body
+  const userId = req.user.id
+
+  const updateData = {}
+
+  // Infos générales — pas de mot de passe requis
+  if (firstName) updateData.firstName = firstName
+  if (lastName) updateData.lastName = lastName
+  if (username) {
+    const normalized = username.toLowerCase()
+    const conflict = await prisma.user.findFirst({
+      where: { username: normalized, NOT: { id: userId } },
+    })
+    if (conflict) return res.status(409).json({ error: 'Ce pseudo est déjà utilisé' })
+    updateData.username = normalized
+  }
+
+  // Infos sensibles — mot de passe actuel requis
+  if (email || newPassword) {
+    if (!currentPassword) {
+      return res.status(400).json({ error: 'Mot de passe actuel requis' })
+    }
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!(await bcrypt.compare(currentPassword, user.passwordHash))) {
+      return res.status(401).json({ error: 'Mot de passe actuel incorrect' })
+    }
+    if (email) {
+      const conflict = await prisma.user.findFirst({
+        where: { email, NOT: { id: userId } },
+      })
+      if (conflict) return res.status(409).json({ error: 'Cet email est déjà utilisé' })
+      updateData.email = email
+    }
+    if (newPassword) {
+      if (newPassword.length < 6) {
+        return res.status(400).json({ error: 'Le mot de passe doit faire au moins 6 caractères' })
+      }
+      updateData.passwordHash = await bcrypt.hash(newPassword, 10)
+    }
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: updateData,
+    select: { id: true, username: true, email: true, firstName: true, lastName: true },
+  })
+
+  res.json({ user: updated })
+})
+
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body
   // Réponse identique que l'email existe ou non (pas de user enumeration)
