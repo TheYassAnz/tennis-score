@@ -71,6 +71,10 @@ export const api = {
   updateMatch: (id: string, data: UpdateMatchPayload) =>
     request<Match>(`/matches/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
+  // Auth — update profile
+  updateProfile: (data: UpdateProfilePayload) =>
+    request<{ user: User }>('/auth/me', { method: 'PATCH', body: JSON.stringify(data) }),
+
   // Auth — reset password
   forgotPassword: (email: string) =>
     request<{ message: string }>('/auth/forgot-password', {
@@ -187,6 +191,15 @@ export interface UpdateMatchPayload {
   players?: { userId: string; side: 'HOME' | 'AWAY'; position: number }[]
   sets?: SetResult[]
   createdAt?: string
+}
+
+export interface UpdateProfilePayload {
+  firstName?: string
+  lastName?: string
+  username?: string
+  email?: string
+  currentPassword?: string
+  newPassword?: string
 }
 
 export interface UserStats {

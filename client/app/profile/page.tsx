@@ -6,7 +6,8 @@ import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
 import ThemeToggle from '@/components/ThemeToggle'
-import { LogOut } from 'lucide-react'
+import Link from 'next/link'
+import { LogOut, Pencil } from 'lucide-react'
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
@@ -30,6 +31,12 @@ export default function ProfilePage() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Link
+              href="/profile/edit"
+              className="p-2 rounded-full bg-surface-2 border border-theme text-muted hover:text-body transition"
+            >
+              <Pencil size={18} />
+            </Link>
             <button
               onClick={logout}
               className="p-2 rounded-full bg-surface-2 border border-theme text-muted hover:text-body transition"

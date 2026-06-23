@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { api, User } from '@/lib/api'
+import { api, User, UpdateProfilePayload } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 
 interface AuthContextValue {
@@ -9,6 +9,7 @@ interface AuthContextValue {
   loading: boolean
   login: (identifier: string, password: string) => Promise<void>
   register: (username: string, email: string, password: string, firstName?: string, lastName?: string) => Promise<void>
+  updateUser: (data: UpdateProfilePayload) => Promise<void>
   logout: () => void
 }
 
@@ -45,6 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/dashboard')
   }
 
+  async function updateUser(data: UpdateProfilePayload) {
+    const { user: updated } = await api.updateProfile(data)
+    setUser(updated)
+  }
+
   function logout() {
     localStorage.removeItem('token')
     setUser(null)
@@ -52,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   )
