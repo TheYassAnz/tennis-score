@@ -75,6 +75,26 @@ export const api = {
   updateProfile: (data: UpdateProfilePayload) =>
     request<{ user: User }>('/auth/me', { method: 'PATCH', body: JSON.stringify(data) }),
 
+  // Users — avatar
+  uploadAvatar: (blob: Blob) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+    const form = new FormData()
+    form.append('avatar', blob, 'avatar.webp')
+    return fetch(`${BASE}/users/avatar`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: form,
+    }).then(async (res) => {
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || `Erreur ${res.status}`)
+      }
+      return res.json() as Promise<{ user: User }>
+    })
+  },
+
+  deleteAvatar: () => request<{ user: User }>('/users/avatar', { method: 'DELETE' }),
+
   // Auth — reset password
   forgotPassword: (email: string) =>
     request<{ message: string }>('/auth/forgot-password', {
@@ -102,6 +122,7 @@ export interface User {
   email: string
   firstName?: string | null
   lastName?: string | null
+  avatarUrl?: string | null
   createdAt?: string
 }
 
@@ -111,7 +132,7 @@ export interface MatchPlayer {
   userId: string
   side: 'HOME' | 'AWAY'
   position: number
-  user: { id: string; username: string }
+  user: { id: string; username: string; firstName?: string; lastName?: string; avatarUrl?: string | null }
 }
 
 export interface Set {
@@ -220,6 +241,7 @@ export interface LeaderboardEntry {
   username: string
   firstName: string
   lastName: string
+  avatarUrl?: string | null
   wins: number
   losses: number
   total: number

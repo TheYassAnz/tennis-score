@@ -6,6 +6,7 @@ import { api, LeaderboardEntry } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
+import Avatar from '@/components/Avatar'
 import { Trophy, Medal } from 'lucide-react'
 
 const medalColors = ['#F59E0B', '#9CA3AF', '#B45309']
@@ -56,11 +57,11 @@ export default function LeaderboardPage() {
                     )}
                   </div>
 
-                  <div className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-                    isMe ? 'bg-primary-subtle text-primary' : 'bg-surface-2 text-muted'
-                  }`}>
-                    {entry.firstName[0].toUpperCase()}{entry.lastName[0].toUpperCase()}
-                  </div>
+                  <Avatar
+                    user={entry}
+                    size={40}
+                    className={isMe ? 'ring-2 ring-primary' : ''}
+                  />
 
                   <div className="flex-1 min-w-0">
                     <p className={`font-semibold truncate ${isMe ? 'text-primary' : 'text-body'}`}>

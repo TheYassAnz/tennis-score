@@ -7,6 +7,7 @@ import AuthGuard from '@/components/AuthGuard'
 import { useAuth } from '@/context/AuthContext'
 import { ChevronLeft, RotateCcw, CheckCircle, Pencil, Trash2 } from 'lucide-react'
 import ManualResult from '@/components/ManualResult'
+import Avatar from '@/components/Avatar'
 
 export default function MatchPage() {
   const { id } = useParams<{ id: string }>()
@@ -176,17 +177,13 @@ export default function MatchPage() {
                   {/* Noms */}
                   <div className="flex-1 space-y-4 mr-4">
                     <div className="flex items-center gap-2 h-10">
-                      <div className="h-8 w-8 rounded-full bg-primary-subtle flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                        {homeNames[0]?.toUpperCase()}
-                      </div>
+                      <Avatar user={homePlayers[0]?.user ?? {}} size={32} />
                       <span className={`font-semibold text-sm truncate ${match.winnerSide === 'HOME' ? 'text-primary' : 'text-body'}`}>
                         {homeNames}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 h-10">
-                      <div className="h-8 w-8 rounded-full bg-surface-2 flex items-center justify-center text-muted text-sm font-bold shrink-0">
-                        {awayNames[0]?.toUpperCase()}
-                      </div>
+                      <Avatar user={awayPlayers[0]?.user ?? {}} size={32} />
                       <span className={`font-semibold text-sm truncate ${match.winnerSide === 'AWAY' ? 'text-primary' : 'text-body'}`}>
                         {awayNames}
                       </span>

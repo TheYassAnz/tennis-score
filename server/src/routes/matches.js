@@ -18,7 +18,7 @@ router.post('/', auth, async (req, res) => {
       creatorId: req.user.id,
       players: { create: players },
     },
-    include: { players: { include: { user: { select: { id: true, username: true } } } } },
+    include: { players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } } },
   })
 
   res.status(201).json(match)
@@ -29,7 +29,7 @@ router.get('/:id', auth, async (req, res) => {
   const match = await prisma.match.findUnique({
     where: { id: req.params.id },
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
       points: { orderBy: { createdAt: 'asc' } },
     },
@@ -98,7 +98,7 @@ router.patch('/:id', auth, async (req, res) => {
     where: { id: match.id },
     data: updateData,
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
     },
   })
@@ -174,7 +174,7 @@ router.post('/:id/point', auth, async (req, res) => {
   const updated = await prisma.match.findUnique({
     where: { id: match.id },
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
       points: { orderBy: { createdAt: 'asc' } },
     },
@@ -221,7 +221,7 @@ router.delete('/:id/point', auth, async (req, res) => {
   const updated = await prisma.match.findUnique({
     where: { id: match.id },
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
       points: { orderBy: { createdAt: 'asc' } },
     },
@@ -258,7 +258,7 @@ router.post('/:id/result', auth, async (req, res) => {
     where: { id: match.id },
     data: { status: 'COMPLETED', winnerSide, completedAt: new Date() },
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
     },
   })
@@ -276,7 +276,7 @@ router.get('/', auth, async (req, res) => {
       players: { some: { userId: userId || req.user.id } },
     },
     include: {
-      players: { include: { user: { select: { id: true, username: true } } } },
+      players: { include: { user: { select: { id: true, username: true, firstName: true, lastName: true, avatarUrl: true } } } },
       sets: { orderBy: { setNumber: 'asc' } },
     },
     orderBy: { createdAt: 'desc' },

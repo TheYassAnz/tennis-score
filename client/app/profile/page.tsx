@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
 import ThemeToggle from '@/components/ThemeToggle'
+import AvatarUpload from '@/components/AvatarUpload'
 import Link from 'next/link'
 import { LogOut, Pencil } from 'lucide-react'
 
@@ -22,14 +23,8 @@ export default function ProfilePage() {
   return (
     <AuthGuard>
       <div className="flex flex-col min-h-full pb-20 bg-page">
-        <header className="flex items-center justify-between px-4 pt-12 pb-6">
-          <div>
-            <h1 className="text-xl font-bold text-body">
-              {user?.firstName} {user?.lastName}
-            </h1>
-            <p className="text-sm text-muted">@{user?.username}</p>
-          </div>
-          <div className="flex items-center gap-2">
+        <header className="px-4 pt-12 pb-6">
+          <div className="flex items-center justify-end gap-2 mb-6">
             <ThemeToggle />
             <Link
               href="/profile/edit"
@@ -43,6 +38,16 @@ export default function ProfilePage() {
             >
               <LogOut size={18} />
             </button>
+          </div>
+
+          <div className="flex flex-col items-center gap-3">
+            <AvatarUpload />
+            <div className="text-center">
+              <h1 className="text-xl font-bold text-body">
+                {user?.firstName} {user?.lastName}
+              </h1>
+              <p className="text-sm text-muted">@{user?.username}</p>
+            </div>
           </div>
         </header>
 
