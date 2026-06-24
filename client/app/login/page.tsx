@@ -39,7 +39,16 @@ export default function LoginPage() {
           <p className="mt-1 text-sm text-muted">Connectez-vous à votre compte</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.target as HTMLElement).tagName !== 'BUTTON') {
+              e.preventDefault()
+              e.currentTarget.requestSubmit()
+            }
+          }}
+          className="space-y-4"
+        >
           <div>
             <label className="block text-sm font-medium text-body mb-1.5">
               Pseudo ou email

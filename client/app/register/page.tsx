@@ -46,7 +46,16 @@ export default function RegisterPage() {
           <p className="mt-1 text-sm text-muted">Rejoignez votre club</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.target as HTMLElement).tagName !== 'BUTTON') {
+              e.preventDefault()
+              e.currentTarget.requestSubmit()
+            }
+          }}
+          className="space-y-4"
+        >
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-body mb-1.5">Prénom</label>

@@ -5,6 +5,16 @@ const crypto = require('crypto')
 const prisma = require('../lib/prisma')
 const { sendPasswordReset } = require('../lib/mailer')
 
+router.get('/check', async (req, res) => {
+  const { field, value } = req.query
+  if (!['username', 'email'].includes(field) || !value || typeof value !== 'string') {
+    return res.status(400).json({ error: 'Paramètres invalides' })
+  }
+  const where = field === 'username' ? { username: value.toLowerCase() } : { email: value }
+  const user = await prisma.user.findUnique({ where, select: { id: true } })
+  res.json({ available: !user })
+})
+
 router.post('/register', async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body
   if (!username || !email || !password || !firstName || !lastName) {
