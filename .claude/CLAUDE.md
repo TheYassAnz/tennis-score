@@ -2,9 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Interaction
+## Rules of interaction
 
-- Always start interactions with my name : 'Yassine' and ask questions to clarify the request.
+- You must always start your response with "Yassine"
+- Ask interactive questions to clarify the user's intent before providing a solution.
 
 ## Stack
 

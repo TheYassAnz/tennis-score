@@ -60,13 +60,13 @@ router.post('/login', async (req, res) => {
     expiresIn: '30d',
   })
 
-  res.json({ user: { id: user.id, username: user.username, email: user.email }, token })
+  res.json({ user: { id: user.id, username: user.username, email: user.email, firstName: user.firstName, lastName: user.lastName, avatarUrl: user.avatarUrl }, token })
 })
 
 router.get('/me', require('../middleware/auth'), async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.user.id },
-    select: { id: true, username: true, email: true, firstName: true, lastName: true, createdAt: true },
+    select: { id: true, username: true, email: true, firstName: true, lastName: true, avatarUrl: true, createdAt: true },
   })
   res.json(user)
 })
@@ -116,7 +116,7 @@ router.patch('/me', require('../middleware/auth'), async (req, res) => {
   const updated = await prisma.user.update({
     where: { id: userId },
     data: updateData,
-    select: { id: true, username: true, email: true, firstName: true, lastName: true },
+    select: { id: true, username: true, email: true, firstName: true, lastName: true, avatarUrl: true },
   })
 
   res.json({ user: updated })
