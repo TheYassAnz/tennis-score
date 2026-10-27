@@ -8,6 +8,8 @@ import { useAuth } from '@/context/AuthContext'
 import { ChevronLeft, RotateCcw, CheckCircle, Pencil, Trash2 } from 'lucide-react'
 import ManualResult from '@/components/ManualResult'
 import Avatar from '@/components/Avatar'
+import { PageTransition } from '@/components/PageTransition'
+import { motion } from 'framer-motion'
 
 export default function MatchPage() {
   const { id } = useParams<{ id: string }>()
@@ -72,6 +74,7 @@ export default function MatchPage() {
     )
   }
 
+
   if (!match) return null
 
   const homePlayers = match.players.filter((p) => p.side === 'HOME')
@@ -86,6 +89,7 @@ export default function MatchPage() {
 
   return (
     <AuthGuard>
+      <PageTransition>
       <div className="flex flex-col min-h-full bg-page">
         <header className="flex items-center gap-3 px-4 pt-12 pb-4">
           <button onClick={() => router.push('/dashboard')} className="p-2 rounded-full bg-surface-2 border border-theme text-muted">
@@ -126,7 +130,7 @@ export default function MatchPage() {
 
         {showDeleteModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-            <div className="bg-surface rounded-2xl p-6 border border-theme w-full max-w-sm">
+            <div className="glass-card rounded-2xl p-6 w-full max-w-sm">
               <h3 className="text-lg font-bold text-body mb-2">Supprimer le match</h3>
               <p className="text-sm text-muted mb-6">
                 Cette action est irréversible. Le match et tout son historique seront définitivement supprimés.
@@ -152,7 +156,7 @@ export default function MatchPage() {
 
         {match.status === 'COMPLETED' && (
           <div className={`mx-4 rounded-2xl py-4 px-6 mb-2 flex items-center gap-3 ${
-            isWin ? 'bg-primary-subtle border border-primary-subtle' : 'bg-surface border border-theme'
+            isWin ? 'bg-primary-subtle border border-primary/30' : 'glass-card'
           }`}>
             <CheckCircle size={20} className={isWin ? 'text-primary' : 'text-muted'} />
             <div>
@@ -171,7 +175,7 @@ export default function MatchPage() {
         ) : (
           <>
             {/* Scoreboard */}
-            <div className="mx-4 mt-2 rounded-3xl bg-surface border border-theme overflow-hidden">
+            <div className="mx-4 mt-2 rounded-3xl glass-card overflow-hidden">
               <div className="px-6 pt-6 pb-4">
                 <div className="flex items-stretch gap-0">
                   {/* Noms */}
@@ -243,6 +247,7 @@ export default function MatchPage() {
           </>
         )}
       </div>
+      </PageTransition>
     </AuthGuard>
   )
 }
@@ -251,19 +256,21 @@ function ScoreButton({ label, side, onPress, disabled }: {
   label: string; side: 'home' | 'away'; onPress: () => void; disabled: boolean
 }) {
   return (
-    <button
+    <motion.button
       onClick={onPress}
       disabled={disabled}
-      className={`flex-1 rounded-3xl min-h-50 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-50 select-none border-2 ${
+      whileTap={{ scale: 0.93 }}
+      transition={{ type: 'spring', stiffness: 450, damping: 22 }}
+      className={`flex-1 rounded-3xl min-h-50 flex flex-col items-center justify-center gap-3 disabled:opacity-50 select-none border-2 ${
         side === 'home'
           ? 'bg-primary-subtle border-primary'
-          : 'bg-surface-2 border-theme'
+          : 'glass-card border-0'
       }`}
     >
       <span className={`text-4xl font-bold ${side === 'home' ? 'text-primary' : 'text-body'}`}>+1</span>
       <span className={`text-sm font-medium px-4 text-center truncate w-full ${side === 'home' ? 'text-primary' : 'text-muted'}`}>
         {label}
       </span>
-    </button>
+    </motion.button>
   )
 }

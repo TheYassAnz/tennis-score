@@ -4,6 +4,12 @@ import { Match } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
 import { formatDistanceToNow } from '@/lib/utils'
+import { motion } from 'framer-motion'
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
+}
 
 interface Props {
   match: Match
@@ -24,9 +30,10 @@ export default function MatchCard({ match }: Props) {
   const score = match.sets.map((s) => `${s.homeGames}-${s.awayGames}`).join('  ')
 
   return (
+    <motion.div variants={cardVariants}>
     <Link
       href={`/match/${match.id}`}
-      className="block rounded-2xl bg-surface border border-theme p-4 active:scale-95 transition-transform"
+      className="block glass-card rounded-2xl p-4 active:scale-95 transition-transform"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -68,5 +75,6 @@ export default function MatchCard({ match }: Props) {
         </div>
       </div>
     </Link>
+    </motion.div>
   )
 }
