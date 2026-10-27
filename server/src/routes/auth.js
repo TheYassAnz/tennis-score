@@ -5,6 +5,22 @@ const crypto = require('crypto')
 const prisma = require('../lib/prisma')
 const { sendPasswordReset } = require('../lib/mailer')
 
+const NAME_RE = /^\p{L}[\p{L} '’-]{0,49}$/u
+const USERNAME_RE = /^[a-z0-9._-]{1,30}$/
+
+// Valide seulement les champs fournis (le PATCH ignore les champs vides)
+function nameError({ username, firstName, lastName }) {
+  if (username && (typeof username !== 'string' || !USERNAME_RE.test(username.toLowerCase()))) {
+    return 'Pseudo invalide : 30 caractères max, lettres, chiffres, . _ -'
+  }
+  for (const name of [firstName, lastName]) {
+    if (name && (typeof name !== 'string' || !NAME_RE.test(name))) {
+      return 'Prénom/nom invalide : 50 caractères max, lettres, espaces, apostrophes, tirets'
+    }
+  }
+  return null
+}
+
 router.get('/check', async (req, res) => {
   const { field, value } = req.query
   if (!['username', 'email'].includes(field) || !value || typeof value !== 'string') {
@@ -20,6 +36,8 @@ router.post('/register', async (req, res) => {
   if (!username || !email || !password || !firstName || !lastName) {
     return res.status(400).json({ error: 'Tous les champs sont requis' })
   }
+  const invalid = nameError({ username, firstName, lastName })
+  if (invalid) return res.status(400).json({ error: invalid })
 
   const normalizedUsername = username.toLowerCase()
 
@@ -74,6 +92,9 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
 router.patch('/me', require('../middleware/auth'), async (req, res) => {
   const { firstName, lastName, username, email, currentPassword, newPassword } = req.body
   const userId = req.user.id
+
+  const invalid = nameError({ username, firstName, lastName })
+  if (invalid) return res.status(400).json({ error: invalid })
 
   const updateData = {}
 
