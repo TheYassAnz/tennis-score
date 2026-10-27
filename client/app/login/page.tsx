@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
 import PasswordInput from '@/components/PasswordInput'
 import { Target } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -28,7 +29,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-6 py-12 bg-page">
-      <div className="w-full max-w-sm">
+      <motion.div
+        className="w-full max-w-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="mb-10 text-center">
           <div className="flex justify-center mb-4">
             <div className="p-4 rounded-2xl bg-primary-subtle">
@@ -99,7 +105,7 @@ export default function LoginPage() {
             S&apos;inscrire
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   )
 }

@@ -17,7 +17,7 @@ export default function BottomNav() {
   const { user } = useAuth()
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 bg-nav-theme border-t border-theme z-50">
+    <nav className="fixed bottom-0 inset-x-0 glass-nav z-50">
       <div className="flex">
         {navLinks.map(({ href, icon: Icon, label }) => {
           const active = pathname === href

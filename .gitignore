@@ -5,3 +5,5 @@ node_modules/
 dist/
 build/
 generated/
+# Added by code-review-graph
+.code-review-graph/

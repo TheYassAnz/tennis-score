@@ -17,6 +17,13 @@ body, input, select, button, textarea {
   font-family: var(--font-barlow), system-ui, sans-serif;
 }
 
+/* Court texture pattern */
+body {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 79px, var(--c-court-line) 79px, var(--c-court-line) 80px),
+    repeating-linear-gradient(90deg, transparent, transparent 99px, var(--c-court-line) 99px, var(--c-court-line) 100px);
+}
+
 /* ── Theme utility classes (mapped to CSS vars) ── */
 
 .bg-page        { background-color: var(--c-bg); }
@@ -55,6 +62,26 @@ body, input, select, button, textarea {
   border-top-color: var(--c-primary);
 }
 
+/* ── Glassmorphism utilities ── */
+
+.glass-card {
+  background: var(--c-glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--c-glass-border);
+  transition: border-color 0.2s ease;
+}
+.glass-card:hover {
+  border-color: var(--c-glass-hover-border);
+}
+
+.glass-nav {
+  background: var(--c-glass-nav);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--c-glass-border);
+}
+
 /* ── Default (US Open Dark) ── */
 :root {
   --c-bg: #040C18;
@@ -68,6 +95,11 @@ body, input, select, button, textarea {
   --c-border: rgba(65,143,222,0.22);
   --c-accent: #F5CF35;
   --c-nav: #060E1E;
+  --c-court-line: rgba(65, 143, 222, 0.06);
+  --c-glass-bg: rgba(8, 24, 40, 0.60);
+  --c-glass-border: rgba(255, 255, 255, 0.10);
+  --c-glass-hover-border: rgba(255, 255, 255, 0.20);
+  --c-glass-nav: rgba(4, 8, 22, 0.80);
 }
 
 /* ── Roland Garros ── */
@@ -83,6 +115,11 @@ body, input, select, button, textarea {
   --c-border: rgba(212,84,30,0.28);
   --c-accent: #E8B455;
   --c-nav: #160C06;
+  --c-court-line: rgba(212, 84, 30, 0.07);
+  --c-glass-bg: rgba(20, 10, 4, 0.62);
+  --c-glass-border: rgba(255, 255, 255, 0.10);
+  --c-glass-hover-border: rgba(255, 255, 255, 0.20);
+  --c-glass-nav: rgba(16, 8, 4, 0.82);
 }
 [data-theme="roland-garros"][data-mode="light"] {
   --c-bg: #FBF0E6;
@@ -96,6 +133,11 @@ body, input, select, button, textarea {
   --c-border: rgba(200,66,26,0.22);
   --c-accent: #1B3A6B;
   --c-nav: #FFF0E4;
+  --c-court-line: rgba(200, 66, 26, 0.07);
+  --c-glass-bg: rgba(255, 255, 255, 0.55);
+  --c-glass-border: rgba(0, 0, 0, 0.08);
+  --c-glass-hover-border: rgba(0, 0, 0, 0.15);
+  --c-glass-nav: rgba(255, 245, 235, 0.80);
 }
 
 /* ── Wimbledon ── */
@@ -111,6 +153,11 @@ body, input, select, button, textarea {
   --c-border: rgba(76,175,80,0.22);
   --c-accent: #9C27B0;
   --c-nav: #08100A;
+  --c-court-line: rgba(76, 175, 80, 0.06);
+  --c-glass-bg: rgba(8, 20, 8, 0.62);
+  --c-glass-border: rgba(255, 255, 255, 0.10);
+  --c-glass-hover-border: rgba(255, 255, 255, 0.20);
+  --c-glass-nav: rgba(6, 10, 6, 0.82);
 }
 [data-theme="wimbledon"][data-mode="light"] {
   --c-bg: #F2FAF2;
@@ -124,6 +171,11 @@ body, input, select, button, textarea {
   --c-border: rgba(46,125,50,0.25);
   --c-accent: #7B1FA2;
   --c-nav: #E4F5E4;
+  --c-court-line: rgba(46, 125, 50, 0.07);
+  --c-glass-bg: rgba(255, 255, 255, 0.55);
+  --c-glass-border: rgba(0, 0, 0, 0.08);
+  --c-glass-hover-border: rgba(0, 0, 0, 0.15);
+  --c-glass-nav: rgba(240, 252, 240, 0.80);
 }
 
 /* ── US Open ── */
@@ -139,6 +191,11 @@ body, input, select, button, textarea {
   --c-border: rgba(65,143,222,0.22);
   --c-accent: #F5CF35;
   --c-nav: #060E1E;
+  --c-court-line: rgba(65, 143, 222, 0.06);
+  --c-glass-bg: rgba(8, 24, 40, 0.60);
+  --c-glass-border: rgba(255, 255, 255, 0.10);
+  --c-glass-hover-border: rgba(255, 255, 255, 0.20);
+  --c-glass-nav: rgba(4, 8, 22, 0.80);
 }
 [data-theme="us-open"][data-mode="light"] {
   --c-bg: #EEF4FD;
@@ -152,6 +209,11 @@ body, input, select, button, textarea {
   --c-border: rgba(21,101,192,0.22);
   --c-accent: #F9A825;
   --c-nav: #D8E8FF;
+  --c-court-line: rgba(21, 101, 192, 0.07);
+  --c-glass-bg: rgba(255, 255, 255, 0.55);
+  --c-glass-border: rgba(0, 0, 0, 0.08);
+  --c-glass-hover-border: rgba(0, 0, 0, 0.15);
+  --c-glass-nav: rgba(220, 235, 255, 0.80);
 }
 
 /* ── Australian Open ── */
@@ -167,6 +229,11 @@ body, input, select, button, textarea {
   --c-border: rgba(0,174,239,0.22);
   --c-accent: #FFD700;
   --c-nav: #050F1A;
+  --c-court-line: rgba(0, 174, 239, 0.06);
+  --c-glass-bg: rgba(5, 16, 28, 0.62);
+  --c-glass-border: rgba(255, 255, 255, 0.10);
+  --c-glass-hover-border: rgba(255, 255, 255, 0.20);
+  --c-glass-nav: rgba(4, 10, 20, 0.82);
 }
 [data-theme="australian-open"][data-mode="light"] {
   --c-bg: #E8F7FF;
@@ -180,4 +247,9 @@ body, input, select, button, textarea {
   --c-border: rgba(0,134,191,0.22);
   --c-accent: #E65100;
   --c-nav: #C8EAFF;
+  --c-court-line: rgba(0, 134, 191, 0.07);
+  --c-glass-bg: rgba(255, 255, 255, 0.55);
+  --c-glass-border: rgba(0, 0, 0, 0.08);
+  --c-glass-hover-border: rgba(0, 0, 0, 0.15);
+  --c-glass-nav: rgba(210, 245, 255, 0.80);
 }
