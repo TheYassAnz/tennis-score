@@ -6,6 +6,7 @@ import { api, User } from '@/lib/api'
 import AuthGuard from '@/components/AuthGuard'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check, User as UserIcon, Users, Radio, ClipboardList } from 'lucide-react'
+import { PageTransition } from '@/components/PageTransition'
 
 type MatchType = 'SINGLE' | 'DOUBLE'
 type MatchMode = 'LIVE' | 'MANUAL'
@@ -81,6 +82,7 @@ export default function NewMatchPage() {
 
   return (
     <AuthGuard>
+      <PageTransition>
       <div className="flex flex-col min-h-full pb-8 bg-page">
         <header className="flex items-center gap-3 px-4 pt-12 pb-6">
           <button onClick={() => router.back()} className="p-2 rounded-full bg-surface-2 border border-theme text-muted">
@@ -100,7 +102,7 @@ export default function NewMatchPage() {
                   type="button"
                   onClick={() => setMatchType(t)}
                   className={`flex flex-col items-center justify-center rounded-2xl py-5 border-2 transition ${
-                    matchType === t ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
+                    matchType === t ? 'border-primary bg-primary-subtle text-primary' : 'glass-card border-0 text-muted'
                   }`}
                 >
                   {t === 'SINGLE' ? <UserIcon size={28} className="mb-1" /> : <Users size={28} className="mb-1" />}
@@ -123,7 +125,7 @@ export default function NewMatchPage() {
                   type="button"
                   onClick={() => setMode(value)}
                   className={`flex flex-col items-center justify-center rounded-2xl py-5 border-2 transition ${
-                    mode === value ? 'border-primary bg-primary-subtle text-primary' : 'border-theme bg-surface text-muted'
+                    mode === value ? 'border-primary bg-primary-subtle text-primary' : 'glass-card border-0 text-muted'
                   }`}
                 >
                   <Icon size={28} className="mb-1" />
@@ -138,7 +140,7 @@ export default function NewMatchPage() {
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Joueurs</h2>
             <div className="space-y-4">
-              <div className="rounded-2xl bg-surface border border-theme p-4">
+              <div className="glass-card rounded-2xl p-4">
                 <p className="text-xs font-semibold text-primary uppercase mb-3">Équipe A</p>
                 <div className="space-y-2">
                   {homeSlots.map((slot, i) => {
@@ -158,7 +160,7 @@ export default function NewMatchPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-surface border border-theme p-4">
+              <div className="glass-card rounded-2xl p-4">
                 <p className="text-xs font-semibold text-accent uppercase mb-3">Équipe B</p>
                 <div className="space-y-2">
                   {awaySlots.map((slot, i) => {
@@ -196,6 +198,7 @@ export default function NewMatchPage() {
           </button>
         </form>
       </div>
+      </PageTransition>
     </AuthGuard>
   )
 }

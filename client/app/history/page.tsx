@@ -6,6 +6,13 @@ import { useAuth } from '@/context/AuthContext'
 import AuthGuard from '@/components/AuthGuard'
 import BottomNav from '@/components/BottomNav'
 import MatchCard from '@/components/MatchCard'
+import { PageTransition } from '@/components/PageTransition'
+import { motion } from 'framer-motion'
+
+const listVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+}
 
 export default function HistoryPage() {
   const { user } = useAuth()
@@ -29,56 +36,65 @@ export default function HistoryPage() {
 
   return (
     <AuthGuard>
-      <div className="flex flex-col min-h-full pb-20 bg-page">
-        <header className="px-4 pt-12 pb-6">
-          <h1 className="text-xl font-bold text-body">Historique</h1>
-        </header>
+      <PageTransition>
+        <div className="flex flex-col min-h-full pb-20 bg-page">
+          <header className="px-4 pt-12 pb-6">
+            <h1 className="text-xl font-bold text-body">Historique</h1>
+          </header>
 
-        <div className="px-4 mb-6">
-          <div className="grid grid-cols-3 gap-3">
-            <StatChip label="Matchs" value={matches.length} />
-            <StatChip label="Victoires" value={wins} highlight />
-            <StatChip label="Défaites" value={matches.length - wins} danger />
+          <div className="px-4 mb-6">
+            <div className="grid grid-cols-3 gap-3">
+              <StatChip label="Matchs" value={matches.length} />
+              <StatChip label="Victoires" value={wins} highlight />
+              <StatChip label="Défaites" value={matches.length - wins} danger />
+            </div>
           </div>
-        </div>
 
-        <div className="flex gap-2 px-4 mb-4">
-          {(['ALL', 'SINGLE', 'DOUBLE'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                filter === f ? 'bg-primary text-white' : 'bg-surface-2 text-muted border border-theme'
-              }`}
-            >
-              {f === 'ALL' ? 'Tous' : f === 'SINGLE' ? 'Simple' : 'Double'}
-            </button>
-          ))}
-        </div>
+          <div className="flex gap-2 px-4 mb-4">
+            {(['ALL', 'SINGLE', 'DOUBLE'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                  filter === f ? 'bg-primary text-white' : 'bg-surface-2 text-muted border border-theme'
+                }`}
+              >
+                {f === 'ALL' ? 'Tous' : f === 'SINGLE' ? 'Simple' : 'Double'}
+              </button>
+            ))}
+          </div>
 
-        <div className="px-4 space-y-3 flex-1">
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 spinner" />
-            </div>
-          ) : filtered.length === 0 ? (
-            <div className="rounded-2xl bg-surface border border-theme p-10 text-center text-muted">
-              Aucun match
-            </div>
-          ) : (
-            filtered.map((m) => <MatchCard key={m.id} match={m} />)
-          )}
-        </div>
+          <div className="px-4 flex-1">
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 spinner" />
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="glass-card rounded-2xl p-10 text-center text-muted">
+                Aucun match
+              </div>
+            ) : (
+              <motion.div
+                className="space-y-3"
+                variants={listVariants}
+                initial="hidden"
+                animate="show"
+              >
+                {filtered.map((m) => <MatchCard key={m.id} match={m} />)}
+              </motion.div>
+            )}
+          </div>
 
-        <BottomNav />
-      </div>
+          <BottomNav />
+        </div>
+      </PageTransition>
     </AuthGuard>
   )
 }
 
 function StatChip({ label, value, highlight, danger }: { label: string; value: number; highlight?: boolean; danger?: boolean }) {
   return (
-    <div className="rounded-2xl bg-surface border border-theme p-4 text-center">
+    <div className="glass-card rounded-2xl p-4 text-center">
       <p className={`text-2xl font-bold ${highlight ? 'text-primary' : danger ? 'text-red-400' : 'text-body'}`}>
         {value}
       </p>
