@@ -7,3 +7,29 @@ build/
 generated/
 # Added by code-review-graph
 .code-review-graph/
+
+# User uploads
+server/uploads/
+
+# OS / local tool config
+.DS_Store
+.vscode/
+.mcp.json
+.claude/settings.json.bak
+.claude/settings.local.json
+.cursor/
+.cursorrules
+.gemini/
+.kiro/
+.qoder/
+.opencode.json
+.windsurfrules
+.github/code-review-graph.instruction.md
+/CLAUDE.md
+/AGENTS.md
+/GEMINI.md
+/QODER.md
+.claude/skills/debug-issue/
+.claude/skills/explore-codebase/
+.claude/skills/refactor-safely/
+.claude/skills/review-changes/
